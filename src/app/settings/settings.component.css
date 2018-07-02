@@ -1,0 +1,7 @@
+.settings-card {
+    margin: 10px 5px;
+}
+
+.temp-sensor-form mat-form-field {
+    display: block;
+}

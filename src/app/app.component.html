@@ -1,0 +1,15 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <span>Freeze Dryer</span>
+      <span class="fill-remaining-space"></span>
+      <button mat-button settings></button>
+      <!-- <span class="mat-button-wrapper">
+        <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true">settings</mat-icon>
+      </span> -->
+      <a mat-button routerLink="/settings"><mat-icon>settings</mat-icon></a>
+      <a mat-button routerLink="/"><mat-icon>home</mat-icon></a>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
