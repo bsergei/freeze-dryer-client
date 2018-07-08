@@ -1,20 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { query } from "@angular/animations";
+import * as model from "@fd-model";
 
-export interface SensorType {
-    id: string;
-}
-
-export interface SensorOpt {
-    sensor_type: string;
-    sensor_id: string;
-}
-
-export interface SensorTemp {
-    sensor_id: string,
-    temperature?: number
-}
+export * from "@fd-model";
 
 @Injectable()
 export class Api {
@@ -23,31 +12,36 @@ export class Api {
 
     public getTempSensorTypes() {
         return this.httpClient
-            .get<SensorType[]>('http://192.168.0.147:3000/api/sensor/type');
+            .get<model.SensorType[]>('http://192.168.0.147:3030/api/sensor/type');
     }
 
     public getTempSensorOpts() {
         return this.httpClient
-            .get<SensorOpt[]>('http://192.168.0.147:3000/api/sensor/opt');
+            .get<model.SensorOpt[]>('http://192.168.0.147:3030/api/sensor/opt');
     }
 
-    public updateTempSensorOpt(sensorOpt: SensorOpt) {
+    public updateTempSensorOpt(sensorOpt: model.SensorOpt) {
         return this.httpClient
-            .post<SensorOpt>('http://192.168.0.147:3000/api/sensor/opt', sensorOpt);
+            .post<model.SensorOpt>('http://192.168.0.147:3030/api/sensor/opt', sensorOpt);
     }
 
     public getTempSensorIds() {
         return this.httpClient
-            .get<SensorTemp[]>('http://192.168.0.147:3000/api/sensor/temp?sensor_id');
+            .get<model.SensorTemp[]>('http://192.168.0.147:3030/api/sensor/temp?sensor_id');
     }
 
     public getTempSensorValue(sensorId: string) {
         return this.httpClient
-            .get<SensorTemp>('http://192.168.0.147:3000/api/sensor/temp/' + sensorId);
+            .get<model.SensorTemp>('http://192.168.0.147:3030/api/sensor/temp/' + sensorId);
     }
 
     public getTempSensorValues() {
         return this.httpClient
-            .get<SensorTemp[]>('http://192.168.0.147:3000/api/sensor/temp');
+            .get<model.SensorTemp[]>('http://192.168.0.147:3030/api/sensor/temp');
+    }
+
+    public getSensorsStatus() {
+        return this.httpClient
+            .get<model.SensorsStatus>('http://192.168.0.147:3030/api/sensors-status');
     }
 }
