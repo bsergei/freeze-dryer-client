@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Api, SensorType, SensorOpt, SensorTemp } from '../services/api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { MatSelect } from '@angular/material';
+import { MatSelect, MatDialog } from '@angular/material';
+import { ConfirmDialogComponent, ConfirmDialogData } from '../dialogs/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-settings',
@@ -20,7 +21,9 @@ export class SettingsComponent implements OnInit {
 
   public sensorTemp: Observable<SensorTemp>;
 
-  constructor(private api: Api) { 
+  constructor(
+    private api: Api,
+    private dialog: MatDialog) { 
     this.sensors = api.getTempSensorTypes();
     this.sensorIds = api.getTempSensorIds()
       .pipe(map(t => t.map(i => i.sensor_id)));
@@ -60,5 +63,19 @@ export class SettingsComponent implements OnInit {
 
   refreshTemp() {
     this.sensorTemp = this.api.getTempSensorValue(this.selectedSensorId);
+  }
+
+  resetBindings() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '250px',
+      data: <ConfirmDialogData>{ text: 'Are you to delete all bindings?' }
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result === true) {
+        await this.api.resetBindings();
+        this.selectedSensorId = undefined;
+      }
+    });
   }
 }

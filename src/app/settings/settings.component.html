@@ -20,10 +20,18 @@
           </mat-select>
         </mat-form-field>
       </form>
-      <div>
-        <span>Sensor Value: {{(sensorTemp | async)?.temperature}}&#176;C</span>&nbsp;
-        <button mat-mini-fab color="primary" [disabled]="!selectedSensorId" (click)="refreshTemp()"><mat-icon>refresh</mat-icon></button>
-      </div>
+      <mat-toolbar>
+        <mat-toolbar-row>
+          <span>Sensor Value: {{(sensorTemp | async)?.temperature}}&#176;C</span>&nbsp;
+          <button mat-mini-fab color="primary" [disabled]="!selectedSensorId" (click)="refreshTemp()">
+            <mat-icon>refresh</mat-icon>
+          </button>
+          <span class="fill-remaining-space"></span>
+          <button mat-mini-fab color="primary" (click)="resetBindings()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-toolbar-row>
+      </mat-toolbar>
     </mat-card-content>
   </mat-card>
 </div>

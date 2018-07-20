@@ -5,3 +5,7 @@
 .temp-sensor-form mat-form-field {
     display: block;
 }
+
+.fill-remaining-space {
+    flex: 1 1 auto;
+}

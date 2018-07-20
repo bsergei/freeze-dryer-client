@@ -51,5 +51,27 @@
               <tr mat-row *matRowDef="let row; columns: ['type', 'temperature', 'ID'];"></tr>
             </table>
       </mat-card-content>
+      <mat-card-footer>
+        <span class="timestamp">Last updated: {{ timestamp | async | date:'mediumTime' }}</span>
+      </mat-card-footer>
+    </mat-card>
+    <mat-card class="dashboard-card">
+      <mat-card-title>
+        <span>Relays</span>
+      </mat-card-title>
+      <mat-card-content>
+        <div>
+          <mat-slide-toggle>Vacuum Pump</mat-slide-toggle>
+        </div>
+        <div>
+          <mat-slide-toggle>Condenser</mat-slide-toggle>
+        </div>
+        <div>
+          <mat-slide-toggle>Heater</mat-slide-toggle>
+        </div>
+      </mat-card-content>
+      <mat-card-footer>
+          <span class="timestamp">Not implemented yet :(</span>
+        </mat-card-footer>
     </mat-card>
 </div>

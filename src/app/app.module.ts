@@ -11,6 +11,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SettingsComponent } from './settings/settings.component';
 import { Api } from './services/api';
 import { HttpClientModule } from '@angular/common/http';
+import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 
 const routes: Routes = [
   {
@@ -32,10 +33,11 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     DashboardComponent,
-    SettingsComponent
+    SettingsComponent,
+    ConfirmDialogComponent
   ],
   imports: [
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { useHash: true }),
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -44,6 +46,9 @@ const routes: Routes = [
   ],
   providers: [
     Api
+  ],
+  entryComponents: [
+    ConfirmDialogComponent
   ],
   bootstrap: [AppComponent]
 })
