@@ -26,15 +26,15 @@ export class DashboardComponent implements OnDestroy {
   }
 
   constructor(private api: Api) {
-    this.sensorStatuses$ = timer(0, 10000)
+    this.sensorStatuses$ = timer(0, 5000)
       .pipe(switchMap(r => api.getSensorsStatus()),
         share());
     
     this.temperatures$ = this.sensorStatuses$.pipe(map(r => r.temp_sensors));
-    this.timestamp$ = this.temperatures$.pipe(map(r => new Date()));
+    this.timestamp$ = this.sensorStatuses$.pipe(map(r => r.asOfDate));
 
     this.relays$ = api.getGpios();
-    const s = timer(0, 5000)
+    const s = timer(0, 2500)
       .pipe(switchMap(r => api.getGpios()), map(pinConfigs => {
         const result: { [id: string]: boolean } = {};
         for (const pinConfig of pinConfigs) {
