@@ -50,4 +50,14 @@ export class Api {
         return this.httpClient
             .get<model.SensorsStatus>('http://194.158.218.58/api/sensors-status');
     }
+
+    public gpioSet(port: number, state: boolean) {
+        return this.httpClient
+            .get<model.SensorsStatus>(`http://194.158.218.58/api/gpio/port/${port}/${state ? '1' :'0' }`);
+    }
+
+    public getGpios() {
+        return this.httpClient
+            .get<model.GpioStatus[]>('http://194.158.218.58/api/gpio/all');
+    }
 }

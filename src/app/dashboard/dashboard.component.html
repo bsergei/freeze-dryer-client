@@ -27,7 +27,7 @@
         <span>Temperature Sensors</span>
       </mat-card-title>
       <mat-card-content>
-          <table mat-table [dataSource]="temperatures" class="mat-elevation-z8">
+          <table mat-table [dataSource]="temperatures$" class="mat-elevation-z8">
 
               <!--- Note that these columns can be defined in any order.
                     The actual rendered columns are set as a property on the row definition" -->
@@ -52,7 +52,7 @@
             </table>
       </mat-card-content>
       <mat-card-footer>
-        <span class="timestamp">Last updated: {{ timestamp | async | date:'mediumTime' }}</span>
+        <span class="timestamp">Last updated: {{ timestamp$ | async | date:'mediumTime' }}</span>
       </mat-card-footer>
     </mat-card>
     <mat-card class="dashboard-card">
@@ -60,18 +60,12 @@
         <span>Relays</span>
       </mat-card-title>
       <mat-card-content>
-        <div>
-          <mat-slide-toggle>Vacuum Pump</mat-slide-toggle>
-        </div>
-        <div>
-          <mat-slide-toggle>Condenser</mat-slide-toggle>
-        </div>
-        <div>
-          <mat-slide-toggle>Heater</mat-slide-toggle>
+        <div *ngFor="let relay of (relays$ | async)" class="relay-box">
+          <mat-slide-toggle [checked]="gpioValues[relay.id]" (change)="onRelayClick($event, relay)">{{ relay.name }}</mat-slide-toggle>
         </div>
       </mat-card-content>
       <mat-card-footer>
-          <span class="timestamp">Not implemented yet :(</span>
+          <span class="timestamp">Last updated: {{ timestampRelays$ | async | date:'mediumTime' }}</span>
         </mat-card-footer>
     </mat-card>
 </div>

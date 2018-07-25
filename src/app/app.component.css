@@ -10,4 +10,7 @@
 .fill-remaining-space {
   flex: 1 1 auto;
 }
-  
+
+.mat-button {
+  min-width: 56px;
+}
