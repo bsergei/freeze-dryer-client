@@ -4,6 +4,11 @@ import { Observable, timer, BehaviorSubject, Subscription } from 'rxjs';
 import { map, switchMap, share } from 'rxjs/operators';
 import { MatSlideToggleChange } from '@angular/material';
 
+interface SensorValue {
+  type: string;
+  value: number;
+}
+
 @Component({
   selector: 'dashboard',
   templateUrl: './dashboard.component.html',
@@ -12,7 +17,7 @@ import { MatSlideToggleChange } from '@angular/material';
 export class DashboardComponent implements OnDestroy {
 
   public sensorStatuses$: Observable<SensorsStatus>;
-  public temperatures$: Observable<SensorTempConnected[]>;
+  public sensors$: Observable<SensorValue[]>;
   public timestamp$: Observable<Date>;
 
   public relays$: Observable<GpioStatus[]>;
@@ -26,16 +31,35 @@ export class DashboardComponent implements OnDestroy {
   }
 
   constructor(private api: Api) {
+    this.init();
+  }
+
+  private init() {
     this.sensorStatuses$ = timer(0, 5000)
-      .pipe(switchMap(r => api.getSensorsStatus()),
+      .pipe(switchMap(r => this.api.getSensorsStatus()),
         share());
-    
-    this.temperatures$ = this.sensorStatuses$.pipe(map(r => r.temp_sensors));
+
+    this.sensors$ = this.sensorStatuses$.pipe(map(r => {
+      const result: SensorValue[] = [];
+      for (const ts of r.temp_sensors) {
+        result.push({
+          type: ts.sensor_type.display + ' (\xB0C)',
+          value: ts.temperature
+        });
+      }
+
+      result.push({
+        type: 'Pressure (mtorr)',
+        value: r.pressure
+      });
+
+      return result;
+    }));
     this.timestamp$ = this.sensorStatuses$.pipe(map(r => r.asOfDate));
 
-    this.relays$ = api.getGpios();
+    this.relays$ = this.api.getGpios();
     const s = timer(0, 2500)
-      .pipe(switchMap(r => api.getGpios()), map(pinConfigs => {
+      .pipe(switchMap(r => this.api.getGpios()), map(pinConfigs => {
         const result: { [id: string]: boolean } = {};
         for (const pinConfig of pinConfigs) {
           result[pinConfig.id] = pinConfig.value;
@@ -43,7 +67,7 @@ export class DashboardComponent implements OnDestroy {
         return result;
       }),
         share());
-    
+
     this.gpioValuesSubscription = s.subscribe(v => {
       this.gpioValues$.next(v);
     });
@@ -53,6 +77,10 @@ export class DashboardComponent implements OnDestroy {
 
   async onRelayClick(state: MatSlideToggleChange, relay: GpioStatus) {
     await this.api.gpioSet(relay.port, state.checked).toPromise();
+  }
+
+  public refresh() {
+    this.init();
   }
 
   public ngOnDestroy() {
