@@ -1,9 +1,10 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { query } from "@angular/animations";
-import * as model from "@fd-model";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import * as model from '@fd-model';
 
-export * from "@fd-model";
+export * from '@fd-model';
+
+const host = 'http://194.158.218.58';
 
 @Injectable()
 export class Api {
@@ -12,52 +13,52 @@ export class Api {
 
     public getTempSensorTypes() {
         return this.httpClient
-            .get<model.SensorType[]>('http://194.158.218.58/api/sensor/type');
+            .get<model.SensorType[]>(host + '/api/sensor/type');
     }
 
     public getTempSensorOpts() {
         return this.httpClient
-            .get<model.SensorOpt[]>('http://194.158.218.58/api/sensor/opt');
+            .get<model.SensorOpt[]>(host + '/api/sensor/opt');
     }
 
     public updateTempSensorOpt(sensorOpt: model.SensorOpt) {
         return this.httpClient
-            .post<model.SensorOpt>('http://194.158.218.58/api/sensor/opt', sensorOpt);
+            .post<model.SensorOpt>(host + '/api/sensor/opt', sensorOpt);
     }
 
     public resetBindings() {
         return this.httpClient
-            .delete('http://194.158.218.58/api/storage/all')
+            .delete(host + '/api/storage/all')
             .toPromise();
     }
 
     public getTempSensorIds() {
         return this.httpClient
-            .get<model.SensorTemp[]>('http://194.158.218.58/api/sensor/temp?sensor_id');
+            .get<model.SensorTemp[]>(host + '/api/sensor/temp?sensor_id');
     }
 
     public getTempSensorValue(sensorId: string) {
         return this.httpClient
-            .get<model.SensorTemp>('http://194.158.218.58/api/sensor/temp/' + sensorId);
+            .get<model.SensorTemp>(host + '/api/sensor/temp/' + sensorId);
     }
 
     public getTempSensorValues() {
         return this.httpClient
-            .get<model.SensorTemp[]>('http://194.158.218.58/api/sensor/temp');
+            .get<model.SensorTemp[]>(host + '/api/sensor/temp');
     }
 
     public getSensorsStatus() {
         return this.httpClient
-            .get<model.SensorsStatus>('http://194.158.218.58/api/sensors-status');
+            .get<model.SensorsStatus>(host + '/api/sensors-status');
     }
 
     public gpioSet(port: number, state: boolean) {
         return this.httpClient
-            .get<model.SensorsStatus>(`http://194.158.218.58/api/gpio/port/${port}/${state ? '1' :'0' }`);
+            .get<model.SensorsStatus>(`${host}/api/gpio/port/${port}/${state ? '1' : '0' }`);
     }
 
     public getGpios() {
         return this.httpClient
-            .get<model.GpioStatus[]>('http://194.158.218.58/api/gpio/all');
+            .get<model.GpioStatus[]>(host + '/api/gpio/all');
     }
 }

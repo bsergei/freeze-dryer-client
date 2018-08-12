@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Vacuum Worker Settings</h2>
+<mat-dialog-content>
+  <form #myForm="ngForm" class="dialog-form">
+    <mat-form-field class="dialog-full-width">
+      <input type="number" matInput placeholder="Pressure" [(ngModel)]="data.targetPressure" name="targetPressure" required>
+    </mat-form-field>
+    <mat-form-field class="dialog-full-width">
+      <input type="number" matInput placeholder="Histeresis" [(ngModel)]="data.histeresis" name="histeresis" required>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <button mat-button [mat-dialog-close]="data" [disabled]="!myForm.form.valid">OK</button>
+</mat-dialog-actions>

@@ -1,0 +1,25 @@
+.dialog-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.dialog-full-width {
+    width: 100%;
+}
+
+.temp-sensor-block-toolbar {
+    margin-left: -10px;
+}
+
+.temp-sensor-block-fields {
+    margin-left: 30px;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.mat-button.mat-small {
+    min-width: 1%;
+}

@@ -1,0 +1,23 @@
+<div fxLayout="row" fxFlexFill>
+    <div fxFlex="33" class="auto-mode-toggle">
+        <mat-slide-toggle [checked]="false" (change)="onAutoCompressorClick($event)">Compressor
+        </mat-slide-toggle>
+        <button mat-icon-button color="primary" (click)="onConfigureCompressor()">
+            <mat-icon class="fd-mat-icon">settings</mat-icon>
+        </button>
+    </div>
+    <div fxFlex="33" class="auto-mode-toggle">
+        <mat-slide-toggle [checked]="false" (change)="onAutoVacuumClick($event)">Vacuum
+        </mat-slide-toggle>
+        <button mat-icon-button color="primary" (click)="onConfigureVacuum()">
+            <mat-icon class="fd-mat-icon">settings</mat-icon>
+        </button>
+    </div>
+    <div fxFlex="34" class="auto-mode-toggle">
+        <mat-slide-toggle [checked]="false" (change)="onAutoyHeaterClick($event)">Heater
+        </mat-slide-toggle>
+        <button mat-icon-button color="primary" (click)="onConfigureHeater()">
+            <mat-icon class="fd-mat-icon">settings</mat-icon>
+        </button>
+    </div>
+</div>

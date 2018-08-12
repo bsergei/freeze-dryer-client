@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>Heater Worker Settings</h2>
+<mat-dialog-content>
+  <form #myForm="ngForm" class="dialog-form">
+    <div class="temp-sensor-block-toolbar" *ngIf="data.tempSensors.length == 0">
+      <button mat-icon-button color="primary">
+        <mat-icon (click)="addSensorData()">add</mat-icon>
+      </button>
+    </div>
+
+    <div class="temp-sensor-block" *ngFor="let tempData of data.tempSensors; let idx = index">
+      <div class="temp-sensor-block-toolbar">
+        <button mat-icon-button class="mat-small" color="primary">
+          <mat-icon (click)="deleteSensorData(tempData)">clear</mat-icon>
+        </button>
+        <button mat-icon-button color="primary">
+          <mat-icon (click)="addSensorData(tempData)">add</mat-icon>
+        </button>
+      </div>
+      <div class="temp-sensor-block-fields">
+        <mat-form-field class="dialog-full-width">
+          <mat-select [(value)]="tempData.tempSensor" required>
+            <mat-option value="heater">heater</mat-option>
+            <mat-option value="heater2">heater2</mat-option>
+            <mat-option value="heater3">heater3</mat-option>
+            <mat-option value="heater4">heater4</mat-option>
+            <mat-option value="heater5">heater5</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="dialog-full-width">
+          <input type="number" matInput placeholder="Temperature" [(ngModel)]="tempData.targetTemperature" name="{{ 'tempDataTargetTemperature' + idx }}" required>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-form-field class="dialog-full-width">
+      <input type="number" matInput placeholder="Histeresis" [(ngModel)]="data.histeresis" name="histeresis" required>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <button mat-button [mat-dialog-close]="data" [disabled]="!myForm.form.valid">OK</button>
+</mat-dialog-actions>

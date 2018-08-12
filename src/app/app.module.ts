@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -12,6 +13,10 @@ import { SettingsComponent } from './settings/settings.component';
 import { Api } from './services/api';
 import { HttpClientModule } from '@angular/common/http';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
+import { CompressorWorkerDialogComponent } from './dialogs/compressor-worker-dialog/compressor-worker-dialog.component';
+import { VacuumWorkerDialogComponent } from './dialogs/vacuum-worker-dialog/vacuum-worker-dialog.component';
+import { HeaterWorkerDialogComponent } from './dialogs/heater-worker-dialog/heater-worker-dialog.component';
+import { WorkersComponent } from './dashboard/workers/workers.component';
 
 const routes: Routes = [
   {
@@ -33,11 +38,16 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     DashboardComponent,
+    WorkersComponent,
     SettingsComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    CompressorWorkerDialogComponent,
+    VacuumWorkerDialogComponent,
+    HeaterWorkerDialogComponent
   ],
   imports: [
     RouterModule.forRoot(routes, { useHash: true }),
+    FormsModule,
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -48,7 +58,10 @@ const routes: Routes = [
     Api
   ],
   entryComponents: [
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    CompressorWorkerDialogComponent,
+    VacuumWorkerDialogComponent,
+    HeaterWorkerDialogComponent
   ],
   bootstrap: [AppComponent]
 })

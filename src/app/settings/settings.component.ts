@@ -15,7 +15,7 @@ export class SettingsComponent implements OnInit {
 
   public sensors: Observable<SensorType[]>;
   public sensorIds: Observable<string[]>;
-  
+
   public selectedSensorType: string;
   public selectedSensorId: string;
 
@@ -23,7 +23,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private api: Api,
-    private dialog: MatDialog) { 
+    private dialog: MatDialog) {
     this.sensors = api.getTempSensorTypes();
     this.sensorIds = api.getTempSensorIds()
       .pipe(map(t => t.map(i => i.sensor_id)));
@@ -55,7 +55,7 @@ export class SettingsComponent implements OnInit {
       const sensorOpt: SensorOpt = {
         sensor_id: this.selectedSensorId,
         sensor_type: this.selectedSensorType
-      }
+      };
 
       await this.api.updateTempSensorOpt(sensorOpt).toPromise();
     }

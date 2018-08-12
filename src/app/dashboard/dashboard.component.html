@@ -1,40 +1,52 @@
-<div class="container" fxLayout="row" fxLayout.xs="column" fxFlexFill>
-  <mat-card class="dashboard-card" fxFlex="66">
-    <mat-card-title>
-      <span>Sensors</span>
-    </mat-card-title>
-    <mat-card-content>
-      <table mat-table [dataSource]="sensors$" class="mat-elevation-z8">
-        <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef> Type </th>
-          <td mat-cell *matCellDef="let element"> {{element.type}} </td>
-        </ng-container>
+<div class="container">
+  <div fxLayout="column" fxFlexFill>
+    <mat-card class="dashboard-card">
+      <mat-card-title>
+        <span>Auto</span>
+      </mat-card-title>
+      <mat-card-content>
+        <workers></workers>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxLayout="row" fxLayout.xs="column" fxFlexFill>
+    <mat-card class="dashboard-card" fxFlex="66">
+      <mat-card-title>
+        <span>Sensors</span>
+      </mat-card-title>
+      <mat-card-content>
+        <table mat-table [dataSource]="sensors$" class="mat-elevation-z8">
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef> Type </th>
+            <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="value">
-          <th mat-header-cell *matHeaderCellDef> Value </th>
-          <td mat-cell *matCellDef="let element"> {{element.value | number:'1.3-3'}} </td>
-        </ng-container>
+          <ng-container matColumnDef="value">
+            <th mat-header-cell *matHeaderCellDef> Value </th>
+            <td mat-cell *matCellDef="let element"> {{element.value | number:'1.3-3'}} </td>
+          </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="['type', 'value']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['type', 'value'];"></tr>
-      </table>
-    </mat-card-content>
-    <mat-card-footer>
-      <span class="timestamp">Last updated: {{ timestamp$ | async | date:'mediumTime' }}</span>
-      <button mat-button (click)="refresh()">Refresh</button>
-    </mat-card-footer>
-  </mat-card>
-  <mat-card class="dashboard-card" fxFlex="34">
-    <mat-card-title>
-      <span>Relays</span>
-    </mat-card-title>
-    <mat-card-content>
-      <div *ngFor="let relay of (relays$ | async)" class="relay-box">
-        <mat-slide-toggle [checked]="gpioValues[relay.id]" (change)="onRelayClick($event, relay)">{{ relay.name }}</mat-slide-toggle>
-      </div>
-    </mat-card-content>
-    <mat-card-footer>
-      <span class="timestamp">Last updated: {{ timestampRelays$ | async | date:'mediumTime' }}</span>
-    </mat-card-footer>
-  </mat-card>
+          <tr mat-header-row *matHeaderRowDef="['type', 'value']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['type', 'value'];"></tr>
+        </table>
+      </mat-card-content>
+      <mat-card-footer>
+        <span class="timestamp">Last updated: {{ timestamp$ | async | date:'mediumTime' }}</span>
+        <button mat-button (click)="refresh()">Refresh</button>
+      </mat-card-footer>
+    </mat-card>
+    <mat-card class="dashboard-card" fxFlex="34">
+      <mat-card-title>
+        <span>Relays</span>
+      </mat-card-title>
+      <mat-card-content>
+        <div *ngFor="let relay of (relays$ | async)" class="relay-box">
+          <mat-slide-toggle [checked]="gpioValues[relay.id]" (change)="onRelayClick($event, relay)">{{ relay.name }}</mat-slide-toggle>
+        </div>
+      </mat-card-content>
+      <mat-card-footer>
+        <span class="timestamp">Last updated: {{ timestampRelays$ | async | date:'mediumTime' }}</span>
+      </mat-card-footer>
+    </mat-card>
+  </div>
 </div>

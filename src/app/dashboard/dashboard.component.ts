@@ -1,8 +1,18 @@
 import { Component, OnDestroy } from '@angular/core';
-import { SensorTemp, Api, SensorTempConnected, SensorsStatus, GpioStatus } from '../services/api';
+import {
+  Api,
+  SensorsStatus,
+  GpioStatus,
+  CompressorWorkerParams,
+  HeaterWorkerParams,
+  VacuumWorkerParams
+} from '../services/api';
 import { Observable, timer, BehaviorSubject, Subscription } from 'rxjs';
 import { map, switchMap, share } from 'rxjs/operators';
-import { MatSlideToggleChange } from '@angular/material';
+import { MatSlideToggleChange, MatDialog } from '@angular/material';
+import { CompressorWorkerDialogComponent } from '../dialogs/compressor-worker-dialog/compressor-worker-dialog.component';
+import { HeaterWorkerDialogComponent } from '../dialogs/heater-worker-dialog/heater-worker-dialog.component';
+import { VacuumWorkerDialogComponent } from '../dialogs/vacuum-worker-dialog/vacuum-worker-dialog.component';
 
 interface SensorValue {
   type: string;
@@ -30,7 +40,8 @@ export class DashboardComponent implements OnDestroy {
     return this.gpioValues$.value;
   }
 
-  constructor(private api: Api) {
+  constructor(
+    private api: Api) {
     this.init();
   }
 

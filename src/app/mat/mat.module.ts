@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { LayoutModule } from '@angular/cdk/layout';
-import { 
-  MatToolbarModule, 
-  MatButtonModule, 
-  MatCheckboxModule, 
-  MatSidenavModule, 
-  MatIconModule, 
+import {
+  MatToolbarModule,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatSidenavModule,
+  MatIconModule,
   MatListModule,
   MatCardModule,
   MatGridListModule,
@@ -21,11 +21,11 @@ import {
 @NgModule({
   imports: [
     LayoutModule,
-    MatToolbarModule, 
-    MatButtonModule, 
-    MatCheckboxModule, 
-    MatSidenavModule, 
-    MatIconModule, 
+    MatToolbarModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatSidenavModule,
+    MatIconModule,
     MatListModule,
     MatCardModule,
     MatGridListModule,
@@ -39,11 +39,11 @@ import {
   ],
   exports: [
     LayoutModule,
-    MatToolbarModule, 
-    MatButtonModule, 
-    MatCheckboxModule, 
-    MatSidenavModule, 
-    MatIconModule, 
+    MatToolbarModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatSidenavModule,
+    MatIconModule,
     MatListModule,
     MatCardModule,
     MatGridListModule,
@@ -56,5 +56,5 @@ import {
     MatDialogModule
   ],
 })
-export class MatModule { 
+export class MatModule {
 }
