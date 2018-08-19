@@ -2,17 +2,11 @@ import { Component, OnDestroy } from '@angular/core';
 import {
   Api,
   SensorsStatus,
-  GpioStatus,
-  CompressorWorkerParams,
-  HeaterWorkerParams,
-  VacuumWorkerParams
+  GpioStatus
 } from '../services/api';
 import { Observable, timer, BehaviorSubject, Subscription } from 'rxjs';
 import { map, switchMap, share } from 'rxjs/operators';
-import { MatSlideToggleChange, MatDialog } from '@angular/material';
-import { CompressorWorkerDialogComponent } from '../dialogs/compressor-worker-dialog/compressor-worker-dialog.component';
-import { HeaterWorkerDialogComponent } from '../dialogs/heater-worker-dialog/heater-worker-dialog.component';
-import { VacuumWorkerDialogComponent } from '../dialogs/vacuum-worker-dialog/vacuum-worker-dialog.component';
+import { MatSlideToggleChange } from '@angular/material';
 
 interface SensorValue {
   type: string;

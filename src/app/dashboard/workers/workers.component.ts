@@ -9,6 +9,8 @@ import { VacuumWorkerDialogComponent } from '../../dialogs/vacuum-worker-dialog/
 import { HeaterWorkerDialogComponent } from '../../dialogs/heater-worker-dialog/heater-worker-dialog.component';
 import { Api } from '../../services/api';
 
+import { timer, Observable } from 'rxjs';
+import { switchMap, share, map } from 'rxjs/operators';
 
 @Component({
     selector: 'workers',
@@ -39,11 +41,23 @@ export class WorkersComponent implements OnDestroy {
         histeresis: 5.0
     };
 
+    public workerStatus$: Observable<any>;
+
     constructor(
         private api: Api,
         private dialog: MatDialog
     ) {
-
+        this.workerStatus$ = timer(0, 1500)
+            .pipe(
+                switchMap(r => this.api.getUnitWorkerStatus()),
+                map(r => {
+                    const result = {};
+                    for (const id of r.runningIds) {
+                        result[id] = true;
+                    }
+                    return result;
+                }),
+                share());
     }
 
     public ngOnDestroy(): void {
@@ -92,11 +106,26 @@ export class WorkersComponent implements OnDestroy {
     }
 
     public async onAutoCompressorClick(state: MatSlideToggleChange) {
+        if (state.checked) {
+            await this.api.startUnitWorker('compressor', this.compressorWorkerParams);
+        } else {
+            await this.api.stopUnitWorker('compressor');
+        }
     }
 
     public async onAutoVacuumClick(state: MatSlideToggleChange) {
+        if (state.checked) {
+            await this.api.startUnitWorker('vacuum', this.vacuumWorkerParams);
+        } else {
+            await this.api.stopUnitWorker('vacuum');
+        }
     }
 
-    public async onAutoyHeaterClick(state: MatSlideToggleChange) {
+    public async onAutoHeaterClick(state: MatSlideToggleChange) {
+        if (state.checked) {
+            await this.api.startUnitWorker('heater', this.heaterWorkerParams);
+        } else {
+            await this.api.stopUnitWorker('heater');
+        }
     }
 }

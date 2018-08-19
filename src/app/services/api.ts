@@ -61,4 +61,25 @@ export class Api {
         return this.httpClient
             .get<model.GpioStatus[]>(host + '/api/gpio/all');
     }
+
+    public getUnitWorkerStatus() {
+        return this.httpClient
+            .get<model.UnitWorkerStatus>(host + '/api/unit-worker/status');
+    }
+
+    public startUnitWorker(
+        unitWorkerId: 'compressor' | 'vacuum' | 'heater',
+        params: model.CompressorWorkerParams | model.VacuumWorkerParams | model.HeaterWorkerParams) {
+        return this.httpClient
+            .post<model.UnitWorkerStatus>(host + '/api/unit-worker/start/' + unitWorkerId,
+                params)
+            .toPromise();
+    }
+
+    public stopUnitWorker(unitWorkerId: 'compressor' | 'vacuum' | 'heater') {
+        return this.httpClient
+            .post<model.UnitWorkerStatus>(host + '/api/unit-worker/stop/' + unitWorkerId,
+                {})
+            .toPromise();
+    }
 }

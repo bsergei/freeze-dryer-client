@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Api, SensorType, SensorOpt, SensorTemp } from '../services/api';
+import { Api, SensorType, SensorOpt, SensorTemp, TempSensorTypeId } from '../services/api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatSelect, MatDialog } from '@angular/material';
@@ -16,7 +16,7 @@ export class SettingsComponent implements OnInit {
   public sensors: Observable<SensorType[]>;
   public sensorIds: Observable<string[]>;
 
-  public selectedSensorType: string;
+  public selectedSensorType: TempSensorTypeId;
   public selectedSensorId: string;
 
   public sensorTemp: Observable<SensorTemp>;
