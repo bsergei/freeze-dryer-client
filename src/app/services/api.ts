@@ -4,7 +4,7 @@ import * as model from '@fd-model';
 
 export * from '@fd-model';
 
-const host = 'http://194.158.218.58';
+const host = 'http://192.168.2.57';
 
 @Injectable()
 export class Api {
