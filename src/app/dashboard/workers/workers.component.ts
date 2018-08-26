@@ -55,6 +55,23 @@ export class WorkersComponent implements OnDestroy {
                     for (const id of r.runningIds) {
                         result[id] = true;
                     }
+
+                    for (const p of r.params) {
+                        switch (p.id) {
+                            case 'compressor':
+                                this.compressorWorkerParams = p.p;
+                                break;
+
+                            case 'vacuum':
+                                this.vacuumWorkerParams = p.p;
+                                break;
+
+                            case 'heater':
+                                this.heaterWorkerParams = p.p;
+                                break;
+                        }
+                    }
+
                     return result;
                 }),
                 share());
