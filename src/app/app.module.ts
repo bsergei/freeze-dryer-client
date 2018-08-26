@@ -17,6 +17,7 @@ import { CompressorWorkerDialogComponent } from './dialogs/compressor-worker-dia
 import { VacuumWorkerDialogComponent } from './dialogs/vacuum-worker-dialog/vacuum-worker-dialog.component';
 import { HeaterWorkerDialogComponent } from './dialogs/heater-worker-dialog/heater-worker-dialog.component';
 import { WorkersComponent } from './dashboard/workers/workers.component';
+import { RebootComponent } from './reboot/reboot.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsComponent,
+  },
+  {
+    path: 'reboot',
+    component: RebootComponent
   },
   {
     path: '',
@@ -43,7 +48,8 @@ const routes: Routes = [
     ConfirmDialogComponent,
     CompressorWorkerDialogComponent,
     VacuumWorkerDialogComponent,
-    HeaterWorkerDialogComponent
+    HeaterWorkerDialogComponent,
+    RebootComponent
   ],
   imports: [
     RouterModule.forRoot(routes, { useHash: true }),

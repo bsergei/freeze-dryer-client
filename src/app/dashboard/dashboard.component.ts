@@ -24,7 +24,7 @@ export class DashboardComponent implements OnDestroy {
   public sensors$: Observable<SensorValue[]>;
   public timestamp$: Observable<Date>;
 
-  public relays$: Observable<GpioStatus[]>;
+  public relays: Promise<GpioStatus[]>;
   public timestampRelays$: Observable<Date>;
   public gpioValues$ = new BehaviorSubject<{ [id: string]: boolean }>({});
 
@@ -39,7 +39,7 @@ export class DashboardComponent implements OnDestroy {
     this.init();
   }
 
-  private init() {
+  private async init() {
     this.sensorStatuses$ = timer(0, 5000)
       .pipe(switchMap(r => this.api.getSensorsStatus()),
         share());
@@ -62,9 +62,10 @@ export class DashboardComponent implements OnDestroy {
     }));
     this.timestamp$ = this.sensorStatuses$.pipe(map(r => r.asOfDate));
 
-    this.relays$ = this.api.getGpios();
+    this.relays = this.api.getGpios().toPromise();
+    await this.relays;
     const s = timer(0, 2500)
-      .pipe(switchMap(r => this.api.getGpios()), map(pinConfigs => {
+      .pipe(switchMap(_ => this.api.getGpios()), map(pinConfigs => {
         const result: { [id: string]: boolean } = {};
         for (const pinConfig of pinConfigs) {
           result[pinConfig.id] = pinConfig.value;

@@ -40,7 +40,7 @@
         <span>Relays</span>
       </mat-card-title>
       <mat-card-content>
-        <div *ngFor="let relay of (relays$ | async)" class="relay-box">
+        <div *ngFor="let relay of (relays | async)" class="relay-box">
           <mat-slide-toggle [checked]="gpioValues[relay.id]" (change)="onRelayClick($event, relay)">{{ relay.name }}</mat-slide-toggle>
         </div>
       </mat-card-content>

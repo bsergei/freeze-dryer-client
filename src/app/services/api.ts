@@ -82,4 +82,10 @@ export class Api {
                 {})
             .toPromise();
     }
+
+    public systemReboot() {
+        return this.httpClient
+            .post<{}>(host + '/api/system/reboot', {})
+            .toPromise();
+    }
 }

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatSelect, MatDialog } from '@angular/material';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../dialogs/confirm-dialog/confirm-dialog.component';
+import { Router } from '../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -22,6 +23,7 @@ export class SettingsComponent implements OnInit {
   public sensorTemp: Observable<SensorTemp>;
 
   constructor(
+    private router: Router,
     private api: Api,
     private dialog: MatDialog) {
     this.sensors = api.getTempSensorTypes();
@@ -68,13 +70,27 @@ export class SettingsComponent implements OnInit {
   resetBindings() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px',
-      data: <ConfirmDialogData>{ text: 'Are you to delete all bindings?' }
+      data: <ConfirmDialogData>{ text: 'Are you sure to delete all bindings?' }
     });
 
     dialogRef.afterClosed().subscribe(async result => {
       if (result === true) {
         await this.api.resetBindings();
         this.selectedSensorId = undefined;
+      }
+    });
+  }
+
+  public systemReboot() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '250px',
+      data: <ConfirmDialogData>{ text: 'Are you sure to reboot system?' }
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result === true) {
+        await this.api.systemReboot();
+        this.router.navigate(['reboot']);
       }
     });
   }
