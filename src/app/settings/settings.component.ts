@@ -94,4 +94,17 @@ export class SettingsComponent implements OnInit {
       }
     });
   }
+
+  public restartCharting() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '250px',
+      data: <ConfirmDialogData>{ text: 'Are you sure to restart Grafana and InfluxDb services?' }
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result === true) {
+        await this.api.restartCharting();
+      }
+    });
+  }
 }

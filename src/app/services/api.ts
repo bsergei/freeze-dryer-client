@@ -94,4 +94,10 @@ export class Api {
             .post<{}>(host + '/api/system/reboot', {})
             .toPromise();
     }
+
+    public restartCharting() {
+        return this.httpClient
+            .post<{}>(host + '/api/system/restart-charting', {})
+            .toPromise();
+    }
 }
