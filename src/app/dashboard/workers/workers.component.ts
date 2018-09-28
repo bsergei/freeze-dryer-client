@@ -1,9 +1,10 @@
 import { MatSlideToggleChange, MatDialog } from '@angular/material';
 import {
     Component,
-    OnDestroy
+    OnDestroy,
+    OnInit
 } from '@angular/core';
-import { CompressorWorkerParams, VacuumWorkerParams, HeaterWorkerParams } from '@fd-model';
+import { CompressorWorkerParams, VacuumWorkerParams, HeaterWorkerParams, UnitWorkerParams } from '@fd-model';
 import { CompressorWorkerDialogComponent } from '../../dialogs/compressor-worker-dialog/compressor-worker-dialog.component';
 import { VacuumWorkerDialogComponent } from '../../dialogs/vacuum-worker-dialog/vacuum-worker-dialog.component';
 import { HeaterWorkerDialogComponent } from '../../dialogs/heater-worker-dialog/heater-worker-dialog.component';
@@ -17,7 +18,7 @@ import { switchMap, share, map } from 'rxjs/operators';
     templateUrl: './workers.component.html',
     styleUrls: ['./workers.component.css']
 })
-export class WorkersComponent implements OnDestroy {
+export class WorkersComponent implements OnDestroy, OnInit {
 
     private compressorWorkerParams: CompressorWorkerParams = {
         minCondenser1Temp: -40.0,
@@ -41,12 +42,23 @@ export class WorkersComponent implements OnDestroy {
         histeresis: 5.0
     };
 
-    public workerStatus$: Observable<any>;
+    public workerStatus$: Observable<{ [kind in keyof(UnitWorkerParams)]: boolean }>;
 
     constructor(
         private api: Api,
         private dialog: MatDialog
     ) {
+    }
+
+    public ngOnDestroy(): void {
+    }
+
+    public async ngOnInit() {
+        const lastParams = await this.api.getUnitWorkersParams();
+        this.compressorWorkerParams = lastParams.compressor;
+        this.vacuumWorkerParams = lastParams.vacuum;
+        this.heaterWorkerParams = lastParams.heater;
+
         this.workerStatus$ = timer(0, 1500)
             .pipe(
                 switchMap(r => this.api.getUnitWorkerStatus()),
@@ -54,20 +66,17 @@ export class WorkersComponent implements OnDestroy {
                     const result = {};
                     for (const id of r.runningIds) {
                         result[id] = true;
-                    }
-
-                    for (const p of r.params) {
-                        switch (p.id) {
+                        switch (id) {
                             case 'compressor':
-                                this.compressorWorkerParams = p.p;
+                                this.compressorWorkerParams = r.params.compressor.p;
                                 break;
 
                             case 'vacuum':
-                                this.vacuumWorkerParams = p.p;
+                                this.vacuumWorkerParams = r.params.vacuum.p;
                                 break;
 
                             case 'heater':
-                                this.heaterWorkerParams = p.p;
+                                this.heaterWorkerParams = r.params.heater.p;
                                 break;
                         }
                     }
@@ -75,9 +84,6 @@ export class WorkersComponent implements OnDestroy {
                     return result;
                 }),
                 share());
-    }
-
-    public ngOnDestroy(): void {
     }
 
     public onConfigureCompressor() {

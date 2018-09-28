@@ -76,6 +76,12 @@ export class Api {
             .toPromise();
     }
 
+    public getUnitWorkersParams() {
+        return this.httpClient
+            .get<model.UnitWorkerParams>(host + '/api/unit-worker/params')
+            .toPromise();
+    }
+
     public stopUnitWorker(unitWorkerId: 'compressor' | 'vacuum' | 'heater') {
         return this.httpClient
             .post<model.UnitWorkerStatus>(host + '/api/unit-worker/stop/' + unitWorkerId,
