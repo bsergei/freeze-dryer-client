@@ -54,8 +54,13 @@ export class DashboardComponent implements OnDestroy {
       }
 
       result.push({
-        type: 'Pressure (mtorr)',
+        type: 'Pressure A0 (mtorr)',
         value: r.pressure
+      });
+
+      result.push({
+        type: 'Pressure A1 (mtorr)',
+        value: r.pressure2
       });
 
       return result;
