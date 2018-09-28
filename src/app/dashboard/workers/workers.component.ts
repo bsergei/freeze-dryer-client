@@ -55,9 +55,19 @@ export class WorkersComponent implements OnDestroy, OnInit {
 
     public async ngOnInit() {
         const lastParams = await this.api.getUnitWorkersParams();
-        this.compressorWorkerParams = lastParams.compressor;
-        this.vacuumWorkerParams = lastParams.vacuum;
-        this.heaterWorkerParams = lastParams.heater;
+        if (lastParams) {
+            if (lastParams.compressor) {
+                this.compressorWorkerParams = lastParams.compressor;
+            }
+
+            if (lastParams.vacuum) {
+                this.vacuumWorkerParams = lastParams.vacuum;
+            }
+
+            if (lastParams.heater) {
+                this.heaterWorkerParams = lastParams.heater;
+            }
+        }
 
         this.workerStatus$ = timer(0, 1500)
             .pipe(
