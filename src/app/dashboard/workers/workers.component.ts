@@ -69,11 +69,14 @@ export class WorkersComponent implements OnDestroy, OnInit {
             }
         }
 
-        this.workerStatus$ = timer(0, 1500)
+        this.workerStatus$ = this.api.getUnitWorkerStatus$()
             .pipe(
-                switchMap(r => this.api.getUnitWorkerStatus()),
                 map(r => {
-                    const result = {};
+                    const result = {
+                        compressor: false,
+                        vacuum: false,
+                        heater: false
+                    };
                     for (const id of r.runningIds) {
                         result[id] = true;
                         switch (id) {

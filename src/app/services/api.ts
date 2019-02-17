@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as model from '@fd-model';
+import * as io from 'socket.io-client';
+import { Observable } from 'rxjs';
+import { share, flatMap } from 'rxjs/operators';
 
 export * from '@fd-model';
 
@@ -8,7 +11,17 @@ const host = 'http://192.168.2.57';
 
 @Injectable()
 export class Api {
+
+    private socket$: Observable<SocketIOClient.Socket>;
+
     constructor(private httpClient: HttpClient) {
+        this.socket$ = new Observable<SocketIOClient.Socket>(observer => {
+            const socket = io(host);
+            observer.next(socket);
+            return () => {
+                socket.disconnect();
+            };
+        }).pipe(share());
     }
 
     public getTempSensorTypes() {
@@ -50,6 +63,29 @@ export class Api {
     public getSensorsStatus() {
         return this.httpClient
             .get<model.SensorsStatus>(host + '/api/sensors-status');
+    }
+
+    public getSensorsStatus$() {
+        return this.socket$.pipe(
+            flatMap(socket => this.subscribe<model.SensorsStatus>(socket, 'sensors-status')));
+    }
+
+    public getUnitWorkerStatus$() {
+        return this.socket$.pipe(
+            flatMap(socket => this.subscribe<model.UnitWorkerStatus>(socket, 'unit-worker-status')));
+    }
+
+    private subscribe<T>(socket: SocketIOClient.Socket, ch: string, ) {
+        const observable = new Observable<T>(observer => {
+            const handler = (data: any) => {
+                observer.next(data);
+            };
+            socket.on(ch, handler);
+            return () => {
+                socket.removeListener(ch, handler);
+            };
+        });
+        return observable;
     }
 
     public gpioSet(port: number, state: boolean) {

@@ -4,8 +4,8 @@ import {
   SensorsStatus,
   GpioStatus
 } from '../services/api';
-import { Observable, timer, BehaviorSubject, Subscription } from 'rxjs';
-import { map, switchMap, share } from 'rxjs/operators';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { map, share } from 'rxjs/operators';
 import { MatSlideToggleChange } from '@angular/material';
 
 interface SensorValue {
@@ -40,9 +40,8 @@ export class DashboardComponent implements OnDestroy {
   }
 
   private async init() {
-    this.sensorStatuses$ = timer(0, 5000)
-      .pipe(switchMap(r => this.api.getSensorsStatus()),
-        share());
+    this.sensorStatuses$ =
+        this.api.getSensorsStatus$().pipe(share());
 
     this.sensors$ = this.sensorStatuses$.pipe(map(r => {
       const result: SensorValue[] = [];
@@ -63,24 +62,53 @@ export class DashboardComponent implements OnDestroy {
         value: r.pressure2
       });
 
+      result.push({
+        type: 'Pressure A2 (mtorr)',
+        value: r.pressure3
+      });
+
+      result.push({
+        type: 'Pressure A3 (mtorr)',
+        value: r.pressure4
+      });
+
+      result.push({
+        type: 'A0',
+        value: r.adcs[0]
+      });
+
+      result.push({
+        type: 'A1',
+        value: r.adcs[1]
+      });
+
+      result.push({
+        type: 'A2',
+        value: r.adcs[2]
+      });
+
+      result.push({
+        type: 'A3',
+        value: r.adcs[3]
+      });
+
       return result;
     }));
     this.timestamp$ = this.sensorStatuses$.pipe(map(r => r.asOfDate));
 
     this.relays = this.api.getGpios().toPromise();
     await this.relays;
-    const s = timer(0, 2500)
-      .pipe(switchMap(_ => this.api.getGpios()), map(pinConfigs => {
-        const result: { [id: string]: boolean } = {};
-        for (const pinConfig of pinConfigs) {
-          result[pinConfig.id] = pinConfig.value;
-        }
-        return result;
-      }),
-        share());
 
-    this.gpioValuesSubscription = s.subscribe(v => {
-      this.gpioValues$.next(v);
+    if (this.gpioValuesSubscription) {
+      this.gpioValuesSubscription.unsubscribe();
+    }
+
+    this.gpioValuesSubscription = this.sensorStatuses$.subscribe(v => {
+      const result: { [id: string]: boolean } = {};
+      for (const pinConfig of v.gpios) {
+        result[pinConfig.id] = pinConfig.value;
+      }
+      this.gpioValues$.next(result);
     });
 
     this.timestampRelays$ = this.gpioValues$.pipe(map(r => new Date()));
