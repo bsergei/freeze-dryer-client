@@ -2,7 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import {
   Api,
   SensorsStatus,
-  GpioStatus
+  GpioStatus,
+  TempSensorTypeId
 } from '../services/api';
 import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { map, share } from 'rxjs/operators';
@@ -45,7 +46,8 @@ export class DashboardComponent implements OnDestroy {
 
     this.sensors$ = this.sensorStatuses$.pipe(map(r => {
       const result: SensorValue[] = [];
-      for (const ts of r.temp_sensors) {
+      for (const tsKey of Object.getOwnPropertyNames(r.temp_sensors)) {
+        const ts = r.temp_sensors[tsKey as TempSensorTypeId];
         result.push({
           type: ts.sensor_type.display + ' (\xB0C)',
           value: ts.temperature
@@ -54,47 +56,17 @@ export class DashboardComponent implements OnDestroy {
 
       result.push({
         type: 'Pressure A0 (mtorr)',
-        value: r.pressure
+        value: r.pressure[0]
       });
 
       result.push({
         type: 'Pressure A1 (mtorr)',
-        value: r.pressure2
-      });
-
-      result.push({
-        type: 'Pressure A2 (mtorr)',
-        value: r.pressure3
-      });
-
-      result.push({
-        type: 'Pressure A3 (mtorr)',
-        value: r.pressure4
-      });
-
-      result.push({
-        type: 'A0',
-        value: r.adcs[0]
-      });
-
-      result.push({
-        type: 'A1',
-        value: r.adcs[1]
-      });
-
-      result.push({
-        type: 'A2',
-        value: r.adcs[2]
-      });
-
-      result.push({
-        type: 'A3',
-        value: r.adcs[3]
+        value: r.pressure[1]
       });
 
       return result;
     }));
-    this.timestamp$ = this.sensorStatuses$.pipe(map(r => r.asOfDate));
+    this.timestamp$ = this.sensorStatuses$.pipe(map(r => r.ts));
 
     this.relays = this.api.getGpios().toPromise();
     await this.relays;
