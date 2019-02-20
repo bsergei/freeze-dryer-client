@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import * as model from '@fd-model';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
-import { share, flatMap } from 'rxjs/operators';
+import { share, flatMap, debounceTime, bufferTime, map, filter } from 'rxjs/operators';
 
 export * from '@fd-model';
 
@@ -85,7 +85,10 @@ export class Api {
                 socket.removeListener(ch, handler);
             };
         });
-        return observable;
+        return observable.pipe(
+            bufferTime(700),
+            map(r => r.length > 0 ? r[r.length - 1] : undefined),
+            filter(r => r !== undefined && r !== null));
     }
 
     public gpioSet(port: number, state: boolean) {

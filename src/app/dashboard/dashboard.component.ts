@@ -44,7 +44,8 @@ export class DashboardComponent implements OnDestroy {
     this.sensorStatuses$ =
         this.api.getSensorsStatus$().pipe(share());
 
-    this.sensors$ = this.sensorStatuses$.pipe(map(r => {
+    this.sensors$ = this.sensorStatuses$.pipe(
+      map(r => {
       const result: SensorValue[] = [];
       for (const tsKey of Object.getOwnPropertyNames(r.temp_sensors)) {
         const ts = r.temp_sensors[tsKey as TempSensorTypeId];
@@ -54,15 +55,19 @@ export class DashboardComponent implements OnDestroy {
         });
       }
 
-      result.push({
-        type: 'Pressure A0 (mtorr)',
-        value: r.pressure[0]
-      });
+      for (let ch = 0; ch < 2; ch++) {
+        result.push({
+          type: `Pressure A${ch} (mtorr)`,
+          value: r.pressure[ch]
+        });
+      }
 
-      result.push({
-        type: 'Pressure A1 (mtorr)',
-        value: r.pressure[1]
-      });
+      for (let ch = 0; ch < 4; ch++) {
+        result.push({
+          type: `ADC A${ch} (mV)`,
+          value: r.adcs[ch] * 1000.0
+        });
+      }
 
       return result;
     }));
