@@ -1,7 +1,7 @@
 <div fxLayout="row" fxFlexFill>
     <div fxFlex="33" class="auto-mode-toggle">
         <mat-slide-toggle
-            [checked]="(workerStatus$ | async)?.compressor"
+            [checked]="workerStatus?.compressor"
             (change)="onAutoCompressorClick($event)">Compressor
         </mat-slide-toggle>
         <button mat-icon-button color="primary" (click)="onConfigureCompressor()">
@@ -10,7 +10,7 @@
     </div>
     <div fxFlex="33" class="auto-mode-toggle">
         <mat-slide-toggle
-            [checked]="(workerStatus$ | async)?.vacuum"
+            [checked]="workerStatus?.vacuum"
             (change)="onAutoVacuumClick($event)">Vacuum
         </mat-slide-toggle>
         <button mat-icon-button color="primary" (click)="onConfigureVacuum()">
@@ -19,7 +19,7 @@
     </div>
     <div fxFlex="34" class="auto-mode-toggle">
         <mat-slide-toggle
-            [checked]="(workerStatus$ | async)?.heater"
+            [checked]="workerStatus?.heater"
             (change)="onAutoHeaterClick($event)">Heater
         </mat-slide-toggle>
         <button mat-icon-button color="primary" (click)="onConfigureHeater()">

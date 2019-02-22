@@ -47,7 +47,9 @@ export class DashboardComponent implements OnDestroy {
     this.sensors$ = this.sensorStatuses$.pipe(
       map(r => {
       const result: SensorValue[] = [];
-      for (const tsKey of Object.getOwnPropertyNames(r.temp_sensors)) {
+      const ids = Object.getOwnPropertyNames(r.temp_sensors);
+      ids.sort();
+      for (const tsKey of ids) {
         const ts = r.temp_sensors[tsKey as TempSensorTypeId];
         result.push({
           type: ts.sensor_type.display + ' (\xB0C)',

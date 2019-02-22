@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import * as model from '@fd-model';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
-import { share, flatMap, debounceTime, bufferTime, map, filter } from 'rxjs/operators';
+import { flatMap, bufferTime, map, filter, shareReplay } from 'rxjs/operators';
 
 export * from '@fd-model';
 
@@ -21,7 +21,7 @@ export class Api {
             return () => {
                 socket.disconnect();
             };
-        }).pipe(share());
+        }).pipe(shareReplay(1));
     }
 
     public getTempSensorTypes() {

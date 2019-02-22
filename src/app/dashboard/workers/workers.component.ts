@@ -4,14 +4,13 @@ import {
     OnDestroy,
     OnInit
 } from '@angular/core';
-import { CompressorWorkerParams, VacuumWorkerParams, HeaterWorkerParams, UnitWorkerParams } from '@fd-model';
+import { CompressorWorkerParams, VacuumWorkerParams, HeaterWorkerParams, UnitWorkerParams, UnitWorkerStatus } from '@fd-model';
 import { CompressorWorkerDialogComponent } from '../../dialogs/compressor-worker-dialog/compressor-worker-dialog.component';
 import { VacuumWorkerDialogComponent } from '../../dialogs/vacuum-worker-dialog/vacuum-worker-dialog.component';
 import { HeaterWorkerDialogComponent } from '../../dialogs/heater-worker-dialog/heater-worker-dialog.component';
 import { Api } from '../../services/api';
 
-import { timer, Observable } from 'rxjs';
-import { switchMap, share, map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'workers',
@@ -42,7 +41,9 @@ export class WorkersComponent implements OnDestroy, OnInit {
         histeresis: 5.0
     };
 
-    public workerStatus$: Observable<{ [kind in keyof(UnitWorkerParams)]: boolean }>;
+    public workerStatus: { [kind in keyof(UnitWorkerParams)]: boolean };
+
+    private subscription: Subscription;
 
     constructor(
         private api: Api,
@@ -51,6 +52,9 @@ export class WorkersComponent implements OnDestroy, OnInit {
     }
 
     public ngOnDestroy(): void {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     public async ngOnInit() {
@@ -69,34 +73,13 @@ export class WorkersComponent implements OnDestroy, OnInit {
             }
         }
 
-        this.workerStatus$ = this.api.getUnitWorkerStatus$()
-            .pipe(
-                map(r => {
-                    const result = {
-                        compressor: false,
-                        vacuum: false,
-                        heater: false
-                    };
-                    for (const id of r.runningIds) {
-                        result[id] = true;
-                        switch (id) {
-                            case 'compressor':
-                                this.compressorWorkerParams = r.params.compressor.p;
-                                break;
+        const ws = await this.api.getUnitWorkerStatus().toPromise();
+        this.updateWorkerStatus(ws);
 
-                            case 'vacuum':
-                                this.vacuumWorkerParams = r.params.vacuum.p;
-                                break;
-
-                            case 'heater':
-                                this.heaterWorkerParams = r.params.heater.p;
-                                break;
-                        }
-                    }
-
-                    return result;
-                }),
-                share());
+        this.subscription = this.api.getUnitWorkerStatus$()
+            .subscribe(r => {
+                this.updateWorkerStatus(r);
+            });
     }
 
     public onConfigureCompressor() {
@@ -163,5 +146,31 @@ export class WorkersComponent implements OnDestroy, OnInit {
         } else {
             await this.api.stopUnitWorker('heater');
         }
+    }
+
+    private updateWorkerStatus(r: UnitWorkerStatus) {
+        const result = {
+            compressor: false,
+            vacuum: false,
+            heater: false
+        };
+        for (const id of r.runningIds) {
+            result[id] = true;
+            switch (id) {
+                case 'compressor':
+                    this.compressorWorkerParams = r.params.compressor.p;
+                    break;
+
+                case 'vacuum':
+                    this.vacuumWorkerParams = r.params.vacuum.p;
+                    break;
+
+                case 'heater':
+                    this.heaterWorkerParams = r.params.heater.p;
+                    break;
+            }
+        }
+
+        this.workerStatus = result;
     }
 }
