@@ -12,6 +12,7 @@ import { MatSlideToggleChange } from '@angular/material';
 interface SensorValue {
   type: string;
   value: number;
+  ts: Date;
 }
 
 @Component({
@@ -53,21 +54,24 @@ export class DashboardComponent implements OnDestroy {
         const ts = r.temp_sensors[tsKey as TempSensorTypeId];
         result.push({
           type: ts.sensor_type.display + ' (\xB0C)',
-          value: ts.temperature
+          value: ts.temperature,
+          ts: new Date(ts.ts)
         });
       }
 
       for (let ch = 0; ch < 2; ch++) {
         result.push({
           type: `Pressure A${ch} (mtorr)`,
-          value: r.pressure[ch]
+          value: r.pressure[ch],
+          ts: new Date(r.pressure_ts)
         });
       }
 
       for (let ch = 0; ch < 4; ch++) {
         result.push({
           type: `ADC A${ch} (mV)`,
-          value: r.adcs[ch] * 1000.0
+          value: r.adcs[ch] * 1000.0,
+          ts: new Date(r.adcs_ts)
         });
       }
 
