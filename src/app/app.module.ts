@@ -18,11 +18,16 @@ import { VacuumWorkerDialogComponent } from './dialogs/vacuum-worker-dialog/vacu
 import { HeaterWorkerDialogComponent } from './dialogs/heater-worker-dialog/heater-worker-dialog.component';
 import { WorkersComponent } from './dashboard/workers/workers.component';
 import { RebootComponent } from './reboot/reboot.component';
+import { RecipesComponent } from './recipes/recipes.component';
 
 const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent
+  },
+  {
+    path: 'recipes',
+    component: RecipesComponent
   },
   {
     path: 'settings',
@@ -45,6 +50,7 @@ const routes: Routes = [
     DashboardComponent,
     WorkersComponent,
     SettingsComponent,
+    RecipesComponent,
     ConfirmDialogComponent,
     CompressorWorkerDialogComponent,
     VacuumWorkerDialogComponent,
