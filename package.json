@@ -19,6 +19,8 @@
     "@angular/platform-browser": "^8.1.2",
     "@angular/platform-browser-dynamic": "^8.1.2",
     "@angular/router": "^8.1.2",
+    "ang-jsoneditor": "^1.8.0",
+    "jsoneditor": "^6.1.0",
     "mxgraph": "^3.9.12",
     "rxjs": "~6.4.0",
     "socket.io-client": "^2.2.0",

@@ -1,0 +1,35 @@
+:host, .recipe-entries-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe-entries-table-wrapper {
+    width: 100%;
+    height: 200px;
+    overflow: auto;
+}
+
+.recipe-entries-table {
+    width: 100%;
+}
+
+.json-editor-wrapper {
+    flex: 1;
+}
+
+.json-editor {
+    height: 100%;
+}
+
+.json-editor[disabled] {
+    display: none;
+}
+
+:host ::ng-deep json-editor > div {
+    height: 100%;
+}
+
+tr.selected {
+    background-color: #CACACA;
+}

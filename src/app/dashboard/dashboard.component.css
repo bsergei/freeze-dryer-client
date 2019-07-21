@@ -1,3 +1,7 @@
+:host {
+    flex: 1;
+}
+
 .dashboard-card {
     margin: 10px 5px;
 }

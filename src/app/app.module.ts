@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { NgJsonEditorModule } from 'ang-jsoneditor';
+
 import { AppComponent } from './app.component';
 import { MatModule } from './mat/mat.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -19,6 +21,9 @@ import { HeaterWorkerDialogComponent } from './dialogs/heater-worker-dialog/heat
 import { WorkersComponent } from './dashboard/workers/workers.component';
 import { RebootComponent } from './reboot/reboot.component';
 import { RecipesComponent } from './recipes/recipes.component';
+import { AddRecipeDialogComponent } from './recipes/dialogs/add-recipe-dialog.component';
+import { AddRecipeEntryDialogComponent } from './recipes/dialogs/add-recipe-entry-dialog.component';
+import { RecipeEntriesComponent } from './recipes/recipe-entries/recipe-entries.component';
 
 const routes: Routes = [
   {
@@ -55,7 +60,10 @@ const routes: Routes = [
     CompressorWorkerDialogComponent,
     VacuumWorkerDialogComponent,
     HeaterWorkerDialogComponent,
-    RebootComponent
+    RebootComponent,
+    AddRecipeDialogComponent,
+    AddRecipeEntryDialogComponent,
+    RecipeEntriesComponent
   ],
   imports: [
     RouterModule.forRoot(routes, { useHash: true }),
@@ -65,6 +73,7 @@ const routes: Routes = [
     BrowserAnimationsModule,
     FlexLayoutModule,
     MatModule,
+    NgJsonEditorModule
   ],
   providers: [
     Api
@@ -73,7 +82,9 @@ const routes: Routes = [
     ConfirmDialogComponent,
     CompressorWorkerDialogComponent,
     VacuumWorkerDialogComponent,
-    HeaterWorkerDialogComponent
+    HeaterWorkerDialogComponent,
+    AddRecipeDialogComponent,
+    AddRecipeEntryDialogComponent
   ],
   bootstrap: [AppComponent]
 })

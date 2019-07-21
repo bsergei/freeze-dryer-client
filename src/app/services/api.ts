@@ -4,6 +4,7 @@ import * as model from '@fd-model';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { flatMap, bufferTime, map, filter, shareReplay } from 'rxjs/operators';
+import { Recipe } from '@fd-model';
 
 export * from '@fd-model';
 
@@ -138,5 +139,37 @@ export class Api {
         return this.httpClient
             .post<{}>(this.host + '/api/system/restart-charting', {})
             .toPromise();
+    }
+
+    public getRecipeNames() {
+        return this.httpClient
+            .get<string[]>(this.host + '/api/recipe-storage');
+    }
+
+    public addRecipe(name: string): Promise<Recipe> {
+        const recipe: Recipe = {
+            name: name,
+            entries: []
+        }
+        return this.httpClient
+            .post<Recipe>(this.host + '/api/recipe-storage', recipe)
+            .toPromise();
+    }
+
+    public updateRecipe(recipe: Recipe): Promise<Recipe> {
+        return this.httpClient
+            .post<Recipe>(this.host + '/api/recipe-storage', recipe)
+            .toPromise();
+    }
+
+    public deleteRecipe(name: string) {
+        return this.httpClient
+            .delete(`${this.host}/api/recipe-storage/${name}`)
+            .toPromise();
+    }
+
+    public getRecipe(recipeName: string) {
+        return this.httpClient
+            .get<Recipe>(`${this.host}/api/recipe-storage/${recipeName}`);
     }
 }
