@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ConfirmDialogData, ConfirmDialogComponent } from 'src/app/dialogs/confirm-dialog/confirm-dialog.component';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
+import { ImportDrawioDialogData, ImportDrawioDialog } from '../dialogs/import-drawio-dialog.component';
 
 @Component({
     selector: 'recipe-entries',
@@ -34,7 +35,7 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
 
     public editorOptions: JsonEditorOptions;
 
-    public data: any;
+    public recipeEntryWorkflow: any;
 
     public workflowModified: boolean;
 
@@ -60,9 +61,15 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
         this.selection.changed.subscribe(r => {
             const selectedItem = this.selectedRecipeEntry;
             if (selectedItem) {
-                this.data = selectedItem.workflow;
+                this.recipeEntryWorkflow = selectedItem.workflow;
+                if (this.jsonEditor) {
+                    this.jsonEditor.disabled = false;
+                }
             } else {
-                this.data = [];
+                this.recipeEntryWorkflow = [];
+                if (this.jsonEditor) {
+                    this.jsonEditor.disabled = true;
+                }
             }
             this.workflowModified = false;
         });
@@ -93,6 +100,7 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
+        this.jsonEditor.disabled = !this.selectedRecipeEntry;
     }
 
     public ngOnDestroy(): void {
@@ -220,6 +228,24 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
                 await this.api.updateRecipe(recipe);
                 this.refresh();
             }
+        }
+    }
+
+    public importGraph() {
+        const selectedItem = this.selectedRecipeEntry;
+        if (selectedItem) {
+            const data = <ImportDrawioDialogData>{};
+            const dialogRef = this.dialog.open(ImportDrawioDialog, {
+                width: '550px',
+                data: data
+            });
+
+            dialogRef.afterClosed().subscribe(async result => {
+                if (result === true) {
+                    this.recipeEntryWorkflow = data.items;
+                    this.workflowModified = true;
+                }
+            });
         }
     }
 }

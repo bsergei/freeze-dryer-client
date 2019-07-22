@@ -1,6 +1,7 @@
 <div class="recipes-container mat-elevation-z8">
     <mat-toolbar>
         <mat-toolbar-row>
+            <span class="toolbar-label">Recipes</span>
             <mat-form-field>
                 <mat-select [value]="selectedRecipeName" (selectionChange)="onRecipeNameSelectionChange($event)">
                     <mat-option *ngFor="let recipeName of recipeNames$ | async" [value]="recipeName">
@@ -8,18 +9,19 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <button mat-button (click)="addRecipe()">
-                Add Recipe
+            <button mat-stroked-button (click)="addRecipe()" title="Add New Recipe">
                 <mat-icon>add</mat-icon>
             </button>
-            <button mat-button (click)="deleteRecipe()" [disabled]="!selectedRecipeName">
-                Delete Recipe
+            <button mat-stroked-button (click)="deleteRecipe()" [disabled]="!selectedRecipeName" title="Delete Recipe">
                 <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-stroked-button (click)="cloneRecipe()" [disabled]="!selectedRecipeName" title="Clone">
+                <mat-icon>file_copy</mat-icon>
+            </button>
+            <button mat-stroked-button (click)="showCode()" [disabled]="!selectedRecipeName" title="Show Code">
+                <mat-icon>code</mat-icon>
             </button>
         </mat-toolbar-row>
     </mat-toolbar>
-    <recipe-entries [recipeName]="selectedRecipeName"></recipe-entries>
 </div>
-
-<!-- <span>hello</span>
-<div #graphContainer id="graphContainer"></div> -->
+<recipe-entries [recipeName]="selectedRecipeName"></recipe-entries>

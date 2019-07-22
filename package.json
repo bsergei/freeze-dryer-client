@@ -22,6 +22,7 @@
     "ang-jsoneditor": "^1.8.0",
     "jsoneditor": "^6.1.0",
     "mxgraph": "^3.9.12",
+    "ngx-file-drop": "^8.0.4",
     "rxjs": "~6.4.0",
     "socket.io-client": "^2.2.0",
     "tslib": "^1.9.0",

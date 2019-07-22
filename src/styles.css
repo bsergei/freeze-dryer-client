@@ -4,3 +4,32 @@ html, body {
     margin: 0;
     height: 100%;
 }
+
+.mat-toolbar {
+    font-size: 12px;
+}
+
+.mat-card-content {
+    font-size: 12px;
+}
+
+button.mat-button, button.mat-stroked-button, button.mat-raised-button {
+    font-size: 12px;
+    padding: 0 8px;
+    min-width: 48px;
+    margin: 0px 2px;
+}
+
+.toolbar-label {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+div.jsoneditor-menu {
+    background-color: #3F51B5;
+    border-bottom: 1px solid #3F51B5;
+}
+
+div.jsoneditor {
+    border: none;
+}

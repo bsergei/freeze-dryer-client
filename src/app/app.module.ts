@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 
+import { NgxFileDropModule } from 'ngx-file-drop';
+
 import { AppComponent } from './app.component';
 import { MatModule } from './mat/mat.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -24,6 +26,8 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { AddRecipeDialogComponent } from './recipes/dialogs/add-recipe-dialog.component';
 import { AddRecipeEntryDialogComponent } from './recipes/dialogs/add-recipe-entry-dialog.component';
 import { RecipeEntriesComponent } from './recipes/recipe-entries/recipe-entries.component';
+import { DisplayRecipeCodeDialog } from './recipes/dialogs/display-recipe-code-dialog.component';
+import { ImportDrawioDialog } from './recipes/dialogs/import-drawio-dialog.component';
 
 const routes: Routes = [
   {
@@ -63,6 +67,8 @@ const routes: Routes = [
     RebootComponent,
     AddRecipeDialogComponent,
     AddRecipeEntryDialogComponent,
+    DisplayRecipeCodeDialog,
+    ImportDrawioDialog,
     RecipeEntriesComponent
   ],
   imports: [
@@ -73,7 +79,8 @@ const routes: Routes = [
     BrowserAnimationsModule,
     FlexLayoutModule,
     MatModule,
-    NgJsonEditorModule
+    NgJsonEditorModule,
+    NgxFileDropModule
   ],
   providers: [
     Api
@@ -84,7 +91,9 @@ const routes: Routes = [
     VacuumWorkerDialogComponent,
     HeaterWorkerDialogComponent,
     AddRecipeDialogComponent,
-    AddRecipeEntryDialogComponent
+    AddRecipeEntryDialogComponent,
+    DisplayRecipeCodeDialog,
+    ImportDrawioDialog
   ],
   bootstrap: [AppComponent]
 })

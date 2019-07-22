@@ -1,13 +1,14 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export interface AddRecipeDialogData {
+  title?: string;
   name: string;
 }
 
 @Component({
   selector: 'add-recipe-dialog',
-  template: `<h2 mat-dialog-title>Add Recipe</h2>
+  template: `<h2 mat-dialog-title>{{data.title}}</h2>
 <mat-dialog-content>
 <form class="example-form">
   <mat-form-field>
@@ -15,18 +16,16 @@ export interface AddRecipeDialogData {
   </mat-form-field>
 </form>
 </mat-dialog-content>
-<mat-dialog-actions>
+<mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
   <button mat-button [mat-dialog-close]="true">OK</button>
 </mat-dialog-actions>`
 })
-export class AddRecipeDialogComponent implements OnInit {
-
+export class AddRecipeDialogComponent {
   constructor(public dialogRef: MatDialogRef<AddRecipeDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddRecipeDialogData) {
-    }
-
-  ngOnInit() {
+      if (!data.title) {
+        data.title = 'Add Recipe';
+      }
   }
 }

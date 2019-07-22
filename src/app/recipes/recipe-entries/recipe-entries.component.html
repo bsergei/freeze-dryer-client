@@ -1,49 +1,52 @@
-<div class="recipe-entries-container mat-elevation-z8">
-    <mat-toolbar>
-        <mat-toolbar-row>
-            <button mat-button (click)="addRecipeEntry()" [disabled]="!recipeName">
-                Add Step
-                <mat-icon>add</mat-icon>
-            </button>
-            <button mat-button (click)="deleteRecipeEntry()" [disabled]="!selectedRecipeEntry">
-                Delete Step
-                <mat-icon>delete</mat-icon>
-            </button>
-            <button mat-button (click)="saveWorkflow()" [disabled]="!workflowModified">
-                Save Workflow
-                <mat-icon>save</mat-icon>
-            </button>
-            <button mat-button (click)="moveItemUp()" [disabled]="!selectedRecipeEntry">
-                <mat-icon>arrow_drop_up</mat-icon>
-            </button>
-            <button mat-button (click)="moveItemDown()" [disabled]="!selectedRecipeEntry">
-                <mat-icon>arrow_drop_down</mat-icon>
-            </button>
-        </mat-toolbar-row>
-    </mat-toolbar>
+<div class="recipe-entries-container">
     <div class="recipe-entries-table-wrapper mat-elevation-z8">
-        <table mat-table [dataSource]="recipeEntries" class="recipe-entries-table">
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef>ID</th>
-                <td mat-cell *matCellDef="let element">{{element.id}}</td>
-            </ng-container>
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <span class="toolbar-label">Recipe Entries</span>
+                <button mat-stroked-button (click)="addRecipeEntry()" [disabled]="!recipeName" title="Add Step">
+                    <mat-icon>add</mat-icon>
+                </button>
+                <button mat-stroked-button (click)="deleteRecipeEntry()" [disabled]="!selectedRecipeEntry" title="Delete Step">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-stroked-button (click)="saveWorkflow()" [disabled]="!workflowModified" title="Save Workflow">
+                    <mat-icon>save</mat-icon>
+                </button>
+                <button mat-stroked-button (click)="moveItemUp()" [disabled]="!selectedRecipeEntry" title="Move Up">
+                    <mat-icon>arrow_drop_up</mat-icon>
+                </button>
+                <button mat-stroked-button (click)="moveItemDown()" [disabled]="!selectedRecipeEntry" title="Move Down">
+                    <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+                <button mat-stroked-button (click)="importGraph()" [disabled]="!selectedRecipeEntry" title="Import from Draw.IO file">
+                    <mat-icon>table_chart</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <div class="recipe-entries-table-wrapper2">
+            <table mat-table [dataSource]="recipeEntries" class="recipe-entries-table">
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef>ID</th>
+                    <td mat-cell *matCellDef="let element">{{element.id}}</td>
+                </ng-container>
 
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let element">{{element.name}}</td>
-            </ng-container>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let element">{{element.name}}</td>
+                </ng-container>
 
-            <ng-container matColumnDef="wf">
-                <th mat-header-cell *matHeaderCellDef>Workflow Items</th>
-                <td mat-cell *matCellDef="let element">{{element.workflow?.length}}</td>
-            </ng-container>
+                <ng-container matColumnDef="wf">
+                    <th mat-header-cell *matHeaderCellDef>Workflow Items</th>
+                    <td mat-cell *matCellDef="let element">{{element.workflow?.length}}</td>
+                </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="['id', 'name', 'wf']; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'wf'];" (click)="selection.select(row)"
-                [ngClass]="{'selected': selection.isSelected(row)}"></tr>
-        </table>
+                <tr mat-header-row *matHeaderRowDef="['id', 'name', 'wf']; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'wf'];" (click)="selection.select(row)"
+                    [ngClass]="{'selected': selection.isSelected(row)}"></tr>
+            </table>
+        </div>
     </div>
-    <div class="json-editor-wrapper">
-        <json-editor [options]="editorOptions" [data]="data" class="json-editor" [attr.disabled]="selectedRecipeEntry ? null : ''"></json-editor>
+    <div class="json-editor-wrapper mat-elevation-z8">
+        <json-editor [options]="editorOptions" [data]="recipeEntryWorkflow" class="json-editor" [attr.disabled]="selectedRecipeEntry ? null : ''"></json-editor>
     </div>
 </div>
