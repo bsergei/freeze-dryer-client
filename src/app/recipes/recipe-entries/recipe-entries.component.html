@@ -6,6 +6,9 @@
                 <button mat-stroked-button (click)="addRecipeEntry()" [disabled]="!recipeName" title="Add Step">
                     <mat-icon>add</mat-icon>
                 </button>
+                <button mat-stroked-button (click)="editRecipeEntry()" [disabled]="!selectedRecipeEntry" title="Edit Step">
+                    <mat-icon>edit</mat-icon>
+                </button>
                 <button mat-stroked-button (click)="deleteRecipeEntry()" [disabled]="!selectedRecipeEntry" title="Delete Step">
                     <mat-icon>delete</mat-icon>
                 </button>
@@ -46,7 +49,13 @@
             </table>
         </div>
     </div>
-    <div class="json-editor-wrapper mat-elevation-z8">
-        <json-editor [options]="editorOptions" [data]="recipeEntryWorkflow" class="json-editor" [attr.disabled]="selectedRecipeEntry ? null : ''"></json-editor>
+    <div class="workflow-viewers">
+        <div class="json-editor-wrapper mat-elevation-z8">
+            <json-editor [options]="editorOptions" [data]="recipeEntryWorkflow" class="json-editor"
+                [attr.disabled]="selectedRecipeEntry ? null : ''"></json-editor>
+        </div>
+        <div class="graph-viewer mat-elevation-z8">
+            <div #graphViewer></div>
+        </div>
     </div>
 </div>

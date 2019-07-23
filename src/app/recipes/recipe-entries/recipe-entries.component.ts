@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { Api, RecipeEntry, WorkflowItem } from 'src/app/services/api';
 import { BehaviorSubject, Observable, combineLatest, of, Subscription } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { ConfirmDialogData, ConfirmDialogComponent } from 'src/app/dialogs/confirm-dialog/confirm-dialog.component';
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
 import { ImportDrawioDialogData, ImportDrawioDialog } from '../dialogs/import-drawio-dialog.component';
+import { WorkflowGraph } from '../model/workflow-graph';
 
 @Component({
     selector: 'recipe-entries',
@@ -22,7 +23,11 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
 
     private recipeEntriesSubscription: Subscription;
 
+    private workflowGraph: WorkflowGraph;
+
     @ViewChild(JsonEditorComponent, { static: true }) jsonEditor: JsonEditorComponent;
+
+    @ViewChild('graphViewer', { static: true }) graphViewer: ElementRef;
 
     @Input()
     public recipeName: string;
@@ -72,6 +77,8 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
                 }
             }
             this.workflowModified = false;
+
+            this.updateGraphViewer();
         });
 
         this.recipeEntries$ = combineLatest(this.refreshRecipeEntries$, this.recipeName$)
@@ -105,6 +112,9 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.recipeEntriesSubscription.unsubscribe();
+        if (this.workflowGraph) {
+            this.workflowGraph.destroy();
+        }
     }
 
     private refresh() {
@@ -142,6 +152,34 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
                         }
                     ]
                 });
+
+                await this.api.updateRecipe(recipe);
+                this.refresh();
+            }
+        });
+    }
+
+    public editRecipeEntry() {
+        if (!this.selectedRecipeEntry) {
+            return;
+        }
+        const data = <AddRecipeEntryDialogData>{
+            title: 'Edit Recipe Entry',
+            id: this.selectedRecipeEntry.id,
+            name: this.selectedRecipeEntry.name
+        };
+        const dialogRef = this.dialog.open(AddRecipeEntryDialogComponent, {
+            width: '250px',
+            data: data
+        });
+
+        dialogRef.afterClosed().subscribe(async result => {
+            if (result === true) {
+                const recipe = await this.api.getRecipe(this.recipeName).toPromise();
+                const entry = recipe.entries.find(r => r.id === this.selectedRecipeEntry.id);
+
+                entry.id = data.id;
+                entry.name = data.name;
 
                 await this.api.updateRecipe(recipe);
                 this.refresh();
@@ -246,6 +284,22 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
                     this.workflowModified = true;
                 }
             });
+        }
+    }
+
+    public updateGraphViewer() {
+
+        if (this.workflowGraph) {
+            this.workflowGraph.destroy();
+        }
+
+        const containerElement = (this.graphViewer.nativeElement as HTMLElement);
+        while (containerElement.firstChild) {
+            containerElement.removeChild(containerElement.firstChild);
+        }
+
+        if (this.selectedRecipeEntry) {
+            this.workflowGraph = new WorkflowGraph(this.selectedRecipeEntry.workflow, containerElement);
         }
     }
 }

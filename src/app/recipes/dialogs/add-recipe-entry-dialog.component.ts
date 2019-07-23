@@ -2,13 +2,14 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export interface AddRecipeEntryDialogData {
-  id: string;
-  name: string;
+  id?: string;
+  name?: string;
+  title?: string;
 }
 
 @Component({
   selector: 'add-recipe-dialog',
-  template: `<h2 mat-dialog-title>Add Recipe</h2>
+  template: `<h2 mat-dialog-title>{{title}}</h2>
 <mat-dialog-content>
 <form class="example-form">
   <mat-form-field>
@@ -25,7 +26,11 @@ export interface AddRecipeEntryDialogData {
 </mat-dialog-actions>`
 })
 export class AddRecipeEntryDialogComponent {
+
+  public title: string;
+
   constructor(public dialogRef: MatDialogRef<AddRecipeEntryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddRecipeEntryDialogData) {
+      this.title = data.title || 'Add Recipe';
   }
 }

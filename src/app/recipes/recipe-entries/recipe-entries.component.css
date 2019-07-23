@@ -42,3 +42,28 @@
 tr.selected {
     background-color: #CACACA;
 }
+
+.workflow-viewers {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.graph-viewer {
+    flex: 1;
+    margin: 5px;
+    overflow: auto;
+    min-height: 0;
+    background:url('/assets/images/grid.gif');
+}
+
+:host ::ng-deep .graph-viewer > div {
+    height: 100%;
+    width: 100%;
+}
+
+:host ::ng-deep .graph-viewer > div > svg {
+    min-width: unset;
+    max-width: unset;
+}

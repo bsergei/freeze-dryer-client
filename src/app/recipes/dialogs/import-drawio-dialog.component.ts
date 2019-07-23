@@ -117,11 +117,31 @@ export class ImportDrawioDialog {
 
   private humanizeIds(wf: WorkflowItem[]) {
     const map = {};
-    let i = 1;
+    let actionId = 1;
+    let conditionId = 1;
     for (const item of wf) {
       if (!map[item.id]) {
-        map[item.id] = `id${i}`;
-        i = i + 1;
+        let newId;
+        if (item.comment) {
+          newId = item.comment.toLowerCase().replace(' ', '_');
+        } else {
+          switch (item.type) {
+            case 'start':
+            case 'end':
+              newId = item.type;
+              break;
+            case 'action':
+              newId = `action${actionId}`;
+              actionId = actionId + 1;
+              break;
+            case 'condition':
+              newId = `condition${conditionId}`;
+              conditionId = conditionId + 1;
+              break;
+          }
+        }
+
+        map[item.id] = newId;
       }
     }
 

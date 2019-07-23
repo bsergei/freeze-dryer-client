@@ -118,9 +118,6 @@ export class MxGraphReader {
         }
     }
 
-    public convertToFdWorkflow() {
-    }
-
     private createMxGraph(mxCells: Element[]) {
         const nodeElements: SimpleMxGraph = {};
         for (const mxCell of mxCells) {
