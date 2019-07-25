@@ -2,9 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export interface AddRecipeEntryDialogData {
-  id?: string;
-  name?: string;
   title?: string;
+  name?: string;
 }
 
 @Component({
@@ -13,10 +12,7 @@ export interface AddRecipeEntryDialogData {
 <mat-dialog-content>
 <form class="example-form">
   <mat-form-field>
-    <input matInput placeholder="Id" [(ngModel)]="data.id" name="id">
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="Name" [(ngModel)]="data.name" name="name">
+    <input matInput placeholder="Step Name" [(ngModel)]="data.name" name="name">
   </mat-form-field>
 </form>
 </mat-dialog-content>

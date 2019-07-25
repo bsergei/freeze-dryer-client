@@ -4,7 +4,7 @@ import { WorkflowItem, WfCondition, WfAction, WfStart, WfEnd } from '@fd-model';
 import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 
 import { DrawIoDecoder } from '../model/draw-io-decoder';
-import { MxGraphReader as MxGraphHelper } from '../model/mx-graph-helper';
+import { MxGraphHelper } from '../model/mx-graph-helper';
 import { FdWorkflowReader } from '../model/fd-workflow-reader';
 
 export interface ImportDrawioDialogData {

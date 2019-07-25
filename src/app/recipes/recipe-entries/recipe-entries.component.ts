@@ -93,7 +93,7 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
             const selectedItem = this.selectedRecipeEntry;
             if (selectedItem) {
                 this.selection.clear();
-                const newSelected = this.recipeEntries.find(i => i.id === selectedItem.id);
+                const newSelected = this.recipeEntries.find(i => i.name === selectedItem.name);
                 this.selection.select(newSelected);
             }
         });
@@ -132,7 +132,6 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
             if (result === true) {
                 const recipe = await this.api.getRecipe(this.recipeName).toPromise();
                 recipe.entries.push({
-                    id: data.id,
                     name: data.name,
                     workflow: [
                         <WorkflowItem>{
@@ -165,7 +164,6 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
         }
         const data = <AddRecipeEntryDialogData>{
             title: 'Edit Recipe Entry',
-            id: this.selectedRecipeEntry.id,
             name: this.selectedRecipeEntry.name
         };
         const dialogRef = this.dialog.open(AddRecipeEntryDialogComponent, {
@@ -176,9 +174,8 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(async result => {
             if (result === true) {
                 const recipe = await this.api.getRecipe(this.recipeName).toPromise();
-                const entry = recipe.entries.find(r => r.id === this.selectedRecipeEntry.id);
+                const entry = recipe.entries.find(r => r.name === this.selectedRecipeEntry.name);
 
-                entry.id = data.id;
                 entry.name = data.name;
 
                 await this.api.updateRecipe(recipe);
@@ -200,7 +197,7 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
                 if (result === true) {
                     this.selection.toggle(selectedItem);
                     const recipe = await this.api.getRecipe(this.recipeName).toPromise();
-                    recipe.entries = recipe.entries.filter(re => re.id !== selectedItem.id);
+                    recipe.entries = recipe.entries.filter(re => re.name !== selectedItem.name);
                     await this.api.updateRecipe(recipe);
                     this.refresh();
                 }
@@ -214,7 +211,7 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
             const newWorkflow = <any>this.jsonEditor.get();
 
             const recipe = await this.api.getRecipe(this.recipeName).toPromise();
-            const entry = recipe.entries.find(re => re.id === selectedItem.id);
+            const entry = recipe.entries.find(re => re.name === selectedItem.name);
             entry.workflow = newWorkflow;
             await this.api.updateRecipe(recipe);
 
@@ -225,9 +222,9 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
     public async moveItemUp() {
         const selectedItem = this.selectedRecipeEntry;
         if (selectedItem) {
-            let idx = this.recipeEntries.findIndex(r => r.id === selectedItem.id);
+            let idx = this.recipeEntries.findIndex(r => r.name === selectedItem.name);
             if (idx >= 0) {
-                let arr = this.recipeEntries.filter(r => r.id !== selectedItem.id);
+                let arr = this.recipeEntries.filter(r => r.name !== selectedItem.name);
 
                 idx = idx - 1;
                 if (idx < 0) {
@@ -248,9 +245,9 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
     public async moveItemDown() {
         const selectedItem = this.selectedRecipeEntry;
         if (selectedItem) {
-            let idx = this.recipeEntries.findIndex(r => r.id === selectedItem.id);
+            let idx = this.recipeEntries.findIndex(r => r.name === selectedItem.name);
             if (idx >= 0) {
-                let arr = this.recipeEntries.filter(r => r.id !== selectedItem.id);
+                let arr = this.recipeEntries.filter(r => r.name !== selectedItem.name);
 
                 idx = idx + 1;
                 if (idx >= arr.length) {

@@ -177,7 +177,7 @@ export class WorkflowGraph {
                 return `<b>id: </b>'${item.id}'
 <b>type: </b>'${item.type}'
 <b>comment: </b>'${(item.comment || '')}'
-<b>cmd: </b>'${(item.cmd || '')}'`;
+<b>cmd: </b>'${((item as (WfAction | WfCondition)).cmd || '')}'`;
             }
             return null;
         };

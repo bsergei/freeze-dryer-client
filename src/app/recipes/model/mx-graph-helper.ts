@@ -3,7 +3,7 @@ import { SimpleMxGraphNode } from './simple-mx-graph-node';
 import { SimpleMxGraphUtils } from './simple-mx-graph-utils';
 import * as mx from 'mxgraph';
 
-export class MxGraphReader {
+export class MxGraphHelper {
 
     public convert(mxGraphXml: Document) {
         const mxCells = Array.from(mxGraphXml.querySelectorAll('mxCell'));
