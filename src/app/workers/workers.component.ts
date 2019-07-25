@@ -5,10 +5,10 @@ import {
     OnInit
 } from '@angular/core';
 import { CompressorWorkerParams, VacuumWorkerParams, HeaterWorkerParams, UnitWorkerParams, UnitWorkerStatus } from '@fd-model';
-import { CompressorWorkerDialogComponent } from '../../dialogs/compressor-worker-dialog/compressor-worker-dialog.component';
-import { VacuumWorkerDialogComponent } from '../../dialogs/vacuum-worker-dialog/vacuum-worker-dialog.component';
-import { HeaterWorkerDialogComponent } from '../../dialogs/heater-worker-dialog/heater-worker-dialog.component';
-import { Api } from '../../services/api';
+import { CompressorWorkerDialogComponent } from '../dialogs/compressor-worker-dialog/compressor-worker-dialog.component';
+import { VacuumWorkerDialogComponent } from '../dialogs/vacuum-worker-dialog/vacuum-worker-dialog.component';
+import { HeaterWorkerDialogComponent } from '../dialogs/heater-worker-dialog/heater-worker-dialog.component';
+import { Api } from '../services/api';
 
 import { Subscription } from 'rxjs';
 

@@ -13,6 +13,10 @@ html, body {
     font-size: 12px;
 }
 
+.mat-card {
+    margin: 10px 5px;
+}
+
 tr.mat-footer-row, tr.mat-row {
     height: 38px !important;
 }

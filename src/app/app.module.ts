@@ -20,7 +20,7 @@ import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.
 import { CompressorWorkerDialogComponent } from './dialogs/compressor-worker-dialog/compressor-worker-dialog.component';
 import { VacuumWorkerDialogComponent } from './dialogs/vacuum-worker-dialog/vacuum-worker-dialog.component';
 import { HeaterWorkerDialogComponent } from './dialogs/heater-worker-dialog/heater-worker-dialog.component';
-import { WorkersComponent } from './dashboard/workers/workers.component';
+import { WorkersComponent } from './workers/workers.component';
 import { RebootComponent } from './reboot/reboot.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { AddRecipeDialogComponent } from './recipes/dialogs/add-recipe-dialog.component';
@@ -28,6 +28,9 @@ import { AddRecipeEntryDialogComponent } from './recipes/dialogs/add-recipe-entr
 import { RecipeEntriesComponent } from './recipes/recipe-entries/recipe-entries.component';
 import { DisplayRecipeCodeDialog } from './recipes/dialogs/display-recipe-code-dialog.component';
 import { ImportDrawioDialog } from './recipes/dialogs/import-drawio-dialog.component';
+import { SensorsComponent } from './sensors/sensors.component';
+import { SensorsService } from './services/sensors.service';
+import { RelaysComponent } from './relays/relays.component';
 
 const routes: Routes = [
   {
@@ -58,6 +61,8 @@ const routes: Routes = [
     AppComponent,
     DashboardComponent,
     WorkersComponent,
+    SensorsComponent,
+    RelaysComponent,
     SettingsComponent,
     RecipesComponent,
     ConfirmDialogComponent,
@@ -83,7 +88,8 @@ const routes: Routes = [
     NgxFileDropModule
   ],
   providers: [
-    Api
+    Api,
+    SensorsService
   ],
   entryComponents: [
     ConfirmDialogComponent,

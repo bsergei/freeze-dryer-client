@@ -1,0 +1,29 @@
+<mat-card>
+    <mat-card-title>
+        <span>Sensors</span>
+    </mat-card-title>
+    <mat-card-content>
+        <table mat-table [dataSource]="sensors$" class="mat-elevation-z8">
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef> Type </th>
+                <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef> Value </th>
+                <td mat-cell *matCellDef="let element"> {{element.value | number:'1.3-3'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ts">
+                <th mat-header-cell *matHeaderCellDef> Time </th>
+                <td mat-cell *matCellDef="let element"> {{element.ts | date:'mediumTime'}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['type', 'value', 'ts']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['type', 'value', 'ts'];"></tr>
+        </table>
+    </mat-card-content>
+    <mat-card-footer>
+        <span class="timestamp">Last updated: {{ timestamp$ | async | date:'mediumTime' }}</span>
+    </mat-card-footer>
+</mat-card>
