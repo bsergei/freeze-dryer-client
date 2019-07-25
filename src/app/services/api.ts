@@ -42,7 +42,7 @@ export class Api {
 
     public resetBindings() {
         return this.httpClient
-            .delete(this.host + '/api/storage/all')
+            .delete(this.host + '/api/storage/sensor-bindings')
             .toPromise();
     }
 
