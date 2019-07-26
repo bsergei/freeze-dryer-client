@@ -1,28 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as model from '@fd-model';
-import * as io from 'socket.io-client';
-import { Observable } from 'rxjs';
-import { flatMap, bufferTime, map, filter, shareReplay } from 'rxjs/operators';
-import { Recipe } from '@fd-model';
-
-export * from '@fd-model';
+import { ConfigurationService } from './configuration.service';
 
 @Injectable()
 export class Api {
 
-    private socket$: Observable<SocketIOClient.Socket>;
-    private host: string;
+    private get host(): string {
+        return this.configurationService.host;
+    }
 
-    constructor(private httpClient: HttpClient) {
-        this.host = '/';
-        this.socket$ = new Observable<SocketIOClient.Socket>(observer => {
-            const socket = io(this.host);
-            observer.next(socket);
-            return () => {
-                socket.disconnect();
-            };
-        }).pipe(shareReplay(1));
+    constructor(private httpClient: HttpClient,
+        private configurationService: ConfigurationService) {
     }
 
     public getTempSensorTypes() {
@@ -64,32 +53,6 @@ export class Api {
     public getSensorsStatus() {
         return this.httpClient
             .get<model.SensorsStatus>(this.host + '/api/sensors-status');
-    }
-
-    public getSensorsStatus$() {
-        return this.socket$.pipe(
-            flatMap(socket => this.subscribe<model.SensorsStatus>(socket, 'sensors-status')));
-    }
-
-    public getUnitWorkerStatus$() {
-        return this.socket$.pipe(
-            flatMap(socket => this.subscribe<model.UnitWorkerStatus>(socket, 'unit-worker-status')));
-    }
-
-    private subscribe<T>(socket: SocketIOClient.Socket, ch: string, ) {
-        const observable = new Observable<T>(observer => {
-            const handler = (data: any) => {
-                observer.next(data);
-            };
-            socket.on(ch, handler);
-            return () => {
-                socket.removeListener(ch, handler);
-            };
-        });
-        return observable.pipe(
-            bufferTime(700),
-            map(r => r.length > 0 ? r[r.length - 1] : undefined),
-            filter(r => r !== undefined && r !== null));
     }
 
     public gpioSet(port: number, state: boolean) {
@@ -146,19 +109,19 @@ export class Api {
             .get<string[]>(this.host + '/api/recipe-storage');
     }
 
-    public addRecipe(name: string): Promise<Recipe> {
-        const recipe: Recipe = {
+    public addRecipe(name: string): Promise<model.Recipe> {
+        const recipe: model.Recipe = {
             name: name,
             entries: []
         }
         return this.httpClient
-            .post<Recipe>(this.host + '/api/recipe-storage', recipe)
+            .post<model.Recipe>(this.host + '/api/recipe-storage', recipe)
             .toPromise();
     }
 
-    public updateRecipe(recipe: Recipe): Promise<Recipe> {
+    public updateRecipe(recipe: model.Recipe): Promise<model.Recipe> {
         return this.httpClient
-            .post<Recipe>(this.host + '/api/recipe-storage', recipe)
+            .post<model.Recipe>(this.host + '/api/recipe-storage', recipe)
             .toPromise();
     }
 
@@ -170,6 +133,6 @@ export class Api {
 
     public getRecipe(recipeName: string) {
         return this.httpClient
-            .get<Recipe>(`${this.host}/api/recipe-storage/${recipeName}`);
+            .get<model.Recipe>(`${this.host}/api/recipe-storage/${recipeName}`);
     }
 }

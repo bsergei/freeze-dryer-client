@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { HeaterWorkerParams, TempSensorTypeId } from '@fd-model';
+import { HeaterWorkerParams } from '@fd-model';
 
 export interface ConfirmDialogData {
     text: string;

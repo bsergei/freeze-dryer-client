@@ -6,7 +6,6 @@ import { AddRecipeDialogComponent, AddRecipeDialogData } from './dialogs/add-rec
 import { ConfirmDialogComponent, ConfirmDialogData } from '../dialogs/confirm-dialog/confirm-dialog.component';
 import { switchMap } from 'rxjs/operators';
 import { DisplayRecipeCodeDialog, DisplayRecipeCodeDialogData } from './dialogs/display-recipe-code-dialog.component';
-import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'recipes',

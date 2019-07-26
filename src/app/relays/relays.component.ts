@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { SensorsService } from '../services/sensors.service';
-import { Api, GpioStatus } from 'src/app/services/api';
+import { Api } from 'src/app/services/api';
 import { MatSlideToggleChange } from '@angular/material';
 import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import { GpioStatus } from '@fd-model';
 
 @Component({
     selector: 'relays',

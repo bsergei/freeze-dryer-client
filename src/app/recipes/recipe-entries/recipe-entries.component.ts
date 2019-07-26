@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges, ViewChild, OnInit, OnDestroy, ElementRef } from '@angular/core';
-import { Api, RecipeEntry, WorkflowItem } from 'src/app/services/api';
+import { Api } from 'src/app/services/api';
 import { BehaviorSubject, Observable, combineLatest, of, Subscription } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { AddRecipeEntryDialogData, AddRecipeEntryDialogComponent } from '../dialogs/add-recipe-entry-dialog.component';
@@ -9,6 +9,7 @@ import { ConfirmDialogData, ConfirmDialogComponent } from 'src/app/dialogs/confi
 import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
 import { ImportDrawioDialogData, ImportDrawioDialog } from '../dialogs/import-drawio-dialog.component';
 import { WorkflowGraph } from '../model/workflow-graph';
+import { RecipeEntry, WfStart, WfAction, WfEnd } from '@fd-model';
 
 @Component({
     selector: 'recipe-entries',
@@ -131,29 +132,15 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(async result => {
             if (result === true) {
                 const recipe = await this.api.getRecipe(this.recipeName).toPromise();
-                recipe.entries.push({
-                    name: data.name,
-                    workflow: [
-                        <WorkflowItem>{
-                            id: 'start_wf',
-                            type: 'start',
-                            next_id: "init"
-                        },
-                        <WorkflowItem>{
-                            id: "init",
-                            type: 'action',
-                            cmd: '',
-                            next_id: 'end_wf'
-                        },
-                        <WorkflowItem>{
-                            id: 'end_wf',
-                            type: 'end'
-                        }
-                    ]
-                });
+                if (recipe.entries.findIndex(r => r.name === data.name) < 0) {
+                    recipe.entries.push({
+                        name: data.name,
+                        workflow: this.createDefaultWorkflow()
+                    });
 
-                await this.api.updateRecipe(recipe);
-                this.refresh();
+                    await this.api.updateRecipe(recipe);
+                    this.refresh();
+                }
             }
         });
     }
@@ -174,12 +161,14 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(async result => {
             if (result === true) {
                 const recipe = await this.api.getRecipe(this.recipeName).toPromise();
-                const entry = recipe.entries.find(r => r.name === this.selectedRecipeEntry.name);
+                if (recipe.entries.findIndex(r => r.name === data.name) < 0) {
+                    const entry = recipe.entries.find(r => r.name === this.selectedRecipeEntry.name);
 
-                entry.name = data.name;
+                    entry.name = data.name;
 
-                await this.api.updateRecipe(recipe);
-                this.refresh();
+                    await this.api.updateRecipe(recipe);
+                    this.refresh();
+                }
             }
         });
     }
@@ -298,5 +287,25 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
         if (this.selectedRecipeEntry) {
             this.workflowGraph = new WorkflowGraph(this.selectedRecipeEntry.workflow, containerElement);
         }
+    }
+
+    private createDefaultWorkflow() {
+        return [
+            <WfStart>{
+                id: 'start_wf',
+                type: 'start',
+                next_id: "init"
+            },
+            <WfAction>{
+                id: "init",
+                type: 'action',
+                cmd: '',
+                next_id: 'end_wf'
+            },
+            <WfEnd>{
+                id: 'end_wf',
+                type: 'end'
+            }
+        ];
     }
 }

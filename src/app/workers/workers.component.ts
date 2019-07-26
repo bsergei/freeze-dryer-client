@@ -11,6 +11,7 @@ import { HeaterWorkerDialogComponent } from '../dialogs/heater-worker-dialog/hea
 import { Api } from '../services/api';
 
 import { Subscription } from 'rxjs';
+import { RealtimeService } from '../services/realtime.service';
 
 @Component({
     selector: 'workers',
@@ -47,6 +48,7 @@ export class WorkersComponent implements OnDestroy, OnInit {
 
     constructor(
         private api: Api,
+        private realtimeService: RealtimeService,
         private dialog: MatDialog
     ) {
     }
@@ -76,7 +78,7 @@ export class WorkersComponent implements OnDestroy, OnInit {
         const ws = await this.api.getUnitWorkerStatus().toPromise();
         this.updateWorkerStatus(ws);
 
-        this.subscription = this.api.getUnitWorkerStatus$()
+        this.subscription = this.realtimeService.getUnitWorkerStatus$()
             .subscribe(r => {
                 this.updateWorkerStatus(r);
             });

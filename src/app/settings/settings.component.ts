@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Api, SensorType, SensorOpt, SensorTemp, TempSensorTypeId } from '../services/api';
+import { Api } from '../services/api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatSelect, MatDialog } from '@angular/material';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../dialogs/confirm-dialog/confirm-dialog.component';
-import { Router } from '../../../node_modules/@angular/router';
+import { Router } from '@angular/router';
+import { SensorType, SensorOpt, SensorTemp, TempSensorTypeId } from '@fd-model';
 
 @Component({
   selector: 'app-settings',

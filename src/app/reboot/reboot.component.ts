@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Api } from '../services/api';
 import { timer, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Component({

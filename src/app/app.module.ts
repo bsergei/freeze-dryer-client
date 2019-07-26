@@ -31,6 +31,8 @@ import { ImportDrawioDialog } from './recipes/dialogs/import-drawio-dialog.compo
 import { SensorsComponent } from './sensors/sensors.component';
 import { SensorsService } from './services/sensors.service';
 import { RelaysComponent } from './relays/relays.component';
+import { ConfigurationService } from './services/configuration.service';
+import { RealtimeService } from './services/realtime.service';
 
 const routes: Routes = [
   {
@@ -88,6 +90,8 @@ const routes: Routes = [
     NgxFileDropModule
   ],
   providers: [
+    ConfigurationService,
+    RealtimeService,
     Api,
     SensorsService
   ],
