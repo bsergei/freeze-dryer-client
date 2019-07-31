@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SensorsService } from '../services/sensors.service';
 import { Api } from 'src/app/services/api';
 import { MatSlideToggleChange } from '@angular/material';
@@ -12,6 +12,8 @@ import { GpioStatus } from '@fd-model';
     styleUrls: ['./relays.component.css']
 })
 export class RelaysComponent {
+
+    @Input() disabled: boolean = false;
 
     public relays: Promise<GpioStatus[]>;
     public timestampRelays$: Observable<Date>;

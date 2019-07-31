@@ -14,6 +14,10 @@ export class WorkflowGraph {
     private lastColor: string;
 
     constructor(private items: WorkflowItem[], container: HTMLElement) {
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+
         this.graph = this.createGraph(container);
         this.defaultParent = this.graph.getDefaultParent();
 

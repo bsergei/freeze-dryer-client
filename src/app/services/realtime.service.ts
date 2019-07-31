@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { shareReplay, flatMap, bufferTime, map, filter, share } from 'rxjs/operators';
-import { SensorsStatus, UnitWorkerStatus } from '@fd-model';
+import { SensorsStatus, UnitWorkerStatus, RecipeRuntimeState } from '@fd-model';
 import { ConfigurationService } from './configuration.service';
 
 import * as io from 'socket.io-client';
@@ -25,12 +25,23 @@ export class RealtimeService {
 
     public getSensorsStatus$() {
         return this.socket$.pipe(
-            flatMap(socket => this.subscribe<SensorsStatus>(socket, 'sensors-status')));
+            flatMap(socket => this.subscribe<SensorsStatus>(socket, 'sensors-status')),
+            bufferTime(200),
+            map(r => r.length > 0 ? r[r.length - 1] : undefined),
+            filter(r => r !== undefined && r !== null));
     }
 
     public getUnitWorkerStatus$() {
         return this.socket$.pipe(
-            flatMap(socket => this.subscribe<UnitWorkerStatus>(socket, 'unit-worker-status')));
+            flatMap(socket => this.subscribe<UnitWorkerStatus>(socket, 'unit-worker-status')),
+            bufferTime(200),
+            map(r => r.length > 0 ? r[r.length - 1] : undefined),
+            filter(r => r !== undefined && r !== null));
+    }
+
+    public getRecipeRunnerStatus$() {
+        return this.socket$.pipe(
+            flatMap(socket => this.subscribe<RecipeRuntimeState>(socket, 'recipe-status')));
     }
 
     private subscribe<T>(socket: SocketIOClient.Socket, ch: string) {
@@ -43,9 +54,7 @@ export class RealtimeService {
                 socket.removeListener(ch, handler);
             };
         });
-        return observable.pipe(
-            bufferTime(700),
-            map(r => r.length > 0 ? r[r.length - 1] : undefined),
-            filter(r => r !== undefined && r !== null));
+
+        return observable;
     }
 }

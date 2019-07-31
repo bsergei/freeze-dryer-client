@@ -3,9 +3,11 @@
         <span>Relays</span>
     </mat-card-title>
     <mat-card-content>
-        <div *ngFor="let relay of (relays | async)" class="relay-box">
-            <mat-slide-toggle [checked]="gpioValues[relay.id]" (change)="onRelayClick($event, relay)">{{ relay.name }}
-            </mat-slide-toggle>
+        <div fxLayout="row wrap">
+            <div *ngFor="let relay of (relays | async)" class="relay-box">
+                <mat-slide-toggle [checked]="gpioValues[relay.id]" (change)="onRelayClick($event, relay)" [disabled]="disabled">{{ relay.name }}
+                </mat-slide-toggle>
+            </div>
         </div>
     </mat-card-content>
     <mat-card-footer>

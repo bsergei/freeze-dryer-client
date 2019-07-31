@@ -135,4 +135,23 @@ export class Api {
         return this.httpClient
             .get<model.Recipe>(`${this.host}/api/recipe-storage/${recipeName}`);
     }
+
+    public startRecipe(recipeName: string) {
+        return this.httpClient
+            .post(`${this.host}/api/recipe-runner`, <model.Recipe>{
+                name: recipeName
+            })
+            .toPromise();
+    }
+
+    public stopRecipe() {
+        return this.httpClient
+            .delete(`${this.host}/api/recipe-runner`)
+            .toPromise();
+    }
+
+    public getRecipeRunnerStatus() {
+        return this.httpClient
+            .get<model.RecipeRuntimeState>(`${this.host}/api/recipe-runner`);
+    }
 }

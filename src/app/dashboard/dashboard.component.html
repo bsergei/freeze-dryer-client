@@ -1,6 +1,6 @@
 <div class="dashboard-container">
-  <div fxLayout="column" fxFlexFill>
-    <mat-card class="dashboard-card">
+  <div fxLayout="column">
+    <mat-card>
       <mat-card-title>
         <span>Auto</span>
       </mat-card-title>
@@ -8,13 +8,7 @@
         <workers></workers>
       </mat-card-content>
     </mat-card>
-  </div>
-  <div fxLayout="row" fxLayout.xs="column" fxFlexFill>
-    <div fxFlex="66">
-      <sensors></sensors>
-    </div>
-    <div fxFlex="34">
-      <relays></relays>
-    </div>
+    <relays></relays>
+    <sensors></sensors>
   </div>
 </div>

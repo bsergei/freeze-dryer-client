@@ -1,0 +1,18 @@
+<mat-toolbar>
+    <mat-form-field>
+        <mat-select [value]="selectedRecipeName" (selectionChange)="onRecipeNameSelectionChange($event)" [disabled]="startDisabled"
+            placeholder="Select Recipe">
+            <mat-option *ngFor="let recipeName of recipeNames$ | async" [value]="recipeName">
+                {{recipeName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-stroked-button (click)="startRecipe()" title="Start selected recipe" [disabled]="startDisabled">
+        <mat-icon>play_arrow</mat-icon>
+        Start
+    </button>
+    <button mat-stroked-button (click)="stopRecipe()" title="Stop selected recipe" [disabled]="stopDisabled">
+        <mat-icon>stop</mat-icon>
+        Stop
+    </button>
+</mat-toolbar>

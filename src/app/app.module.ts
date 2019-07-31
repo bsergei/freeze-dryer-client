@@ -31,8 +31,10 @@ import { ImportDrawioDialog } from './recipes/dialogs/import-drawio-dialog.compo
 import { SensorsComponent } from './sensors/sensors.component';
 import { SensorsService } from './services/sensors.service';
 import { RelaysComponent } from './relays/relays.component';
+import { RecipesControllerComponent } from './recipes-controller/recipes-controller.component';
 import { ConfigurationService } from './services/configuration.service';
 import { RealtimeService } from './services/realtime.service';
+import { RecipeAnimatorComponent } from './recipes/recipe-animator/recipe-animator.component';
 
 const routes: Routes = [
   {
@@ -40,8 +42,12 @@ const routes: Routes = [
     component: DashboardComponent
   },
   {
-    path: 'recipes',
+    path: 'recipes-edit',
     component: RecipesComponent
+  },
+  {
+    path: 'recipes',
+    component: RecipeAnimatorComponent
   },
   {
     path: 'settings',
@@ -67,6 +73,7 @@ const routes: Routes = [
     RelaysComponent,
     SettingsComponent,
     RecipesComponent,
+    RecipesControllerComponent,
     ConfirmDialogComponent,
     CompressorWorkerDialogComponent,
     VacuumWorkerDialogComponent,
@@ -76,7 +83,8 @@ const routes: Routes = [
     AddRecipeEntryDialogComponent,
     DisplayRecipeCodeDialog,
     ImportDrawioDialog,
-    RecipeEntriesComponent
+    RecipeEntriesComponent,
+    RecipeAnimatorComponent
   ],
   imports: [
     RouterModule.forRoot(routes, { useHash: true }),

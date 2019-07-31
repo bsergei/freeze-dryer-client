@@ -274,16 +274,10 @@ export class RecipeEntriesComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     public updateGraphViewer() {
-
         if (this.workflowGraph) {
             this.workflowGraph.destroy();
         }
-
         const containerElement = (this.graphViewer.nativeElement as HTMLElement);
-        while (containerElement.firstChild) {
-            containerElement.removeChild(containerElement.firstChild);
-        }
-
         if (this.selectedRecipeEntry) {
             this.workflowGraph = new WorkflowGraph(this.selectedRecipeEntry.workflow, containerElement);
         }
