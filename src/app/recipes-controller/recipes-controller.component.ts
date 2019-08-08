@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { Api } from '../services/api';
 import { MatSelectChange } from '@angular/material';
 import { RecipeRuntimeState } from '@fd-model';
 import { RealtimeService } from '../services/realtime.service';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'recipes-controller',
@@ -11,6 +12,8 @@ import { RealtimeService } from '../services/realtime.service';
     styleUrls: ['./recipes-controller.component.css']
 })
 export class RecipesControllerComponent implements OnInit, OnDestroy {
+
+    @Output() recipeChanged: EventEmitter<string> = new EventEmitter();
 
     public recipeNames$: Observable<string[]>;
 
@@ -27,12 +30,16 @@ export class RecipesControllerComponent implements OnInit, OnDestroy {
     constructor(
         private api: Api,
         private realtimeService: RealtimeService) {
-        this.recipeNames$ = this.api.getRecipeNames();
+        this.recipeNames$ = this.api.getRecipeNames().pipe(map(data => {
+            data.sort();
+            return data;
+        }));
     }
 
     public async ngOnInit() {
         const status = await this.api.getRecipeRunnerStatus().toPromise();
         this.setLastStatus(status);
+        this.recipeChanged.emit(this.selectedRecipeName);
 
         this.rtStatusSubscription = this.realtimeService.getRecipeRunnerStatus$()
             .subscribe(s => {
@@ -48,7 +55,8 @@ export class RecipesControllerComponent implements OnInit, OnDestroy {
 
     public async onRecipeNameSelectionChange(evt: MatSelectChange) {
         this.selectedRecipeName = evt.value;
-        this.setLastStatus(this.lastStatus);
+        this.recipeChanged.emit(this.selectedRecipeName);
+        this.setLastStatus(undefined);
     }
 
     public async startRecipe() {

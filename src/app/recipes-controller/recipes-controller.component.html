@@ -1,6 +1,6 @@
 <mat-toolbar>
     <mat-form-field>
-        <mat-select [value]="selectedRecipeName" (selectionChange)="onRecipeNameSelectionChange($event)" [disabled]="startDisabled"
+        <mat-select [value]="selectedRecipeName" (selectionChange)="onRecipeNameSelectionChange($event)"
             placeholder="Select Recipe">
             <mat-option *ngFor="let recipeName of recipeNames$ | async" [value]="recipeName">
                 {{recipeName}}

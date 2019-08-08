@@ -1,6 +1,6 @@
 <div fxLayout="column" fxFlexFill>
     <div class="controller mat-elevation-z8">
-        <recipes-controller></recipes-controller>
+        <recipes-controller (recipeChanged)="onRecipeChanged($event)"></recipes-controller>
     </div>
     <div fxLayout="row" fxLayout.xs="column" fxFlex="1 0 auto">
         <div class="graph-container mat-elevation-z8" fxFlex="1 1 auto">
@@ -14,7 +14,7 @@
                     </mat-card-title>
                     <mat-card-content>
                         <div class="info"><span class="label">Time: </span><span>{{ recipeTime | date:'HH:mm:ss' }}</span></div>
-                        <div class="info" *ngIf="!isFinished"><span class="label">Current step: </span><span>{{ currentStep }}</span></div>
+                        <div class="info"><span class="label">Current step: </span><span>{{ currentStep }}</span></div>
                         <div class="info" *ngIf="!isFinished"><span class="label">Progress: </span><mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar></div>
                         <div class="info" *ngIf="isFinished"><span class="label">Recipe is finished: </span><span>{{ isFinished }}</span></div>
                         <div class="info" *ngIf="!isFinished"><span class="label">Recipe cursor: </span><span>{{ cursor }}</span></div>

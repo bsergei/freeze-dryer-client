@@ -45,14 +45,6 @@ export class RecipeAnimatorComponent implements OnInit, OnDestroy {
     }
 
     public async ngOnInit() {
-        const firstStatus = await this.api.getRecipeRunnerStatus().toPromise();
-        await this.updateStatus(firstStatus);
-
-        this.statesSubscription = this.realtimeService.getRecipeRunnerStatus$()
-            .subscribe(async status => {
-                this.updateStatus(status);
-                // this.changeDetectorRef.detectChanges();
-            });
     }
 
     public ngOnDestroy(): void {
@@ -64,6 +56,36 @@ export class RecipeAnimatorComponent implements OnInit, OnDestroy {
             this.wfGraph.destroy();
             this.wfGraph = undefined;
         }
+    }
+
+    public async onRecipeChanged(recipeName: string) {
+        const status = await this.api.getRecipeRunnerStatus().toPromise();
+
+        if (status && status.recipeName === recipeName) {
+            await this.updateStatus(status);
+        } else {
+            await this.updateStatus({
+                recipeName: recipeName,
+                cursorStr: '',
+                isFinished: true,
+                isAborted: false,
+                startDate: new Date(),
+                steps: [],
+                currentStep: undefined,
+                endDate: new Date(),
+                error: undefined
+            });
+        }
+
+        if (this.statesSubscription) {
+            this.statesSubscription.unsubscribe();
+        }
+
+        this.statesSubscription = this.realtimeService.getRecipeRunnerStatus$()
+            .subscribe(async status => {
+                this.updateStatus(status);
+                // this.changeDetectorRef.detectChanges();
+            });
     }
 
     private async updateStatus(status: RecipeRuntimeState) {
@@ -80,12 +102,9 @@ export class RecipeAnimatorComponent implements OnInit, OnDestroy {
         // Compensate timezone.
         this.recipeTime = new Date(this.recipeTime.getTime() + this.recipeTime.getTimezoneOffset()*60000);
 
-        if (this.lastRecipeName !== status.recipeName) {
-            this.lastRecipeName = status.recipeName;
-            this.recipe = await this.api.getRecipe(this.lastRecipeName).toPromise();
-        }
+        await this.updateRecipeIfNeed(status.recipeName);
 
-        if (!this.recipe) {
+        if (!this.recipe || this.recipe.name !== status.recipeName) {
             return;
         }
 
@@ -106,6 +125,24 @@ export class RecipeAnimatorComponent implements OnInit, OnDestroy {
                 this.highlightWorkflow(id);
 
                 this.progress = 100 * status.steps.length / this.recipe.entries.length;
+            }
+        }
+    }
+
+    private async updateRecipeIfNeed(recipeName: string) {
+        if (this.lastRecipeName !== recipeName) {
+            this.lastRecipeName = recipeName;
+            if (recipeName) {
+                this.recipe = await this.api.getRecipe(this.lastRecipeName).toPromise();
+            } else {
+                this.recipe = undefined;
+            }
+
+            if (this.recipe && this.recipe.entries && this.recipe.entries.length) {
+                this.initGraph(this.recipe.entries[0].workflow);
+                this.currentStep = this.recipe.entries[0].name;
+            } else {
+                this.initGraph([]);
             }
         }
     }

@@ -4,7 +4,7 @@ import { Api } from '../services/api';
 import { MatDialog, MatSelectChange } from '@angular/material';
 import { AddRecipeDialogComponent, AddRecipeDialogData } from './dialogs/add-recipe-dialog.component';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../dialogs/confirm-dialog/confirm-dialog.component';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { DisplayRecipeCodeDialog, DisplayRecipeCodeDialogData } from './dialogs/display-recipe-code-dialog.component';
 
 @Component({
@@ -29,7 +29,11 @@ export class RecipesComponent implements OnInit {
         private dialog: MatDialog) {
         this.recipeNames$ =
             this.refreshRecipeNames$.pipe(
-                switchMap(() => this.api.getRecipeNames())
+                switchMap(() => this.api.getRecipeNames()),
+                map(data => {
+                    data.sort();
+                    return data;
+                })
             );
     }
 
