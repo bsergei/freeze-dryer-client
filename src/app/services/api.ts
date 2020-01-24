@@ -136,10 +136,11 @@ export class Api {
             .get<model.Recipe>(`${this.host}/api/recipe-storage/${recipeName}`);
     }
 
-    public startRecipe(recipeName: string) {
+    public startRecipe(recipeName: string, recipeEntryName: string) {
         return this.httpClient
-            .post(`${this.host}/api/recipe-runner`, <model.Recipe>{
-                name: recipeName
+            .post(`${this.host}/api/recipe-runner`, <model.RecipeStartRequest>{
+                name: recipeName,
+                recipeEntryName: recipeEntryName
             })
             .toPromise();
     }

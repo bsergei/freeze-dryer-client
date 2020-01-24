@@ -1,9 +1,21 @@
 <mat-toolbar>
     <mat-form-field>
-        <mat-select [value]="selectedRecipeName" (selectionChange)="onRecipeNameSelectionChange($event)"
+        <mat-select
+            [disabled]="recipeDisabled"
+            [value]="selectedRecipeName" (selectionChange)="onRecipeNameSelectionChange($event)"
             placeholder="Select Recipe">
             <mat-option *ngFor="let recipeName of recipeNames$ | async" [value]="recipeName">
                 {{recipeName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select
+            [disabled]="recipeEntryDisabled"
+            [value]="selectedRecipeNameEntry" (selectionChange)="onRecipeNameEntrySelectionChange($event)"
+            placeholder="Select Recipe Step">
+            <mat-option *ngFor="let recipeNameEntry of recipeNameEntrys" [value]="recipeNameEntry">
+                {{recipeNameEntry}}
             </mat-option>
         </mat-select>
     </mat-form-field>

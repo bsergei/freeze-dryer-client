@@ -23,7 +23,15 @@ export class RecipesControllerComponent implements OnInit, OnDestroy {
 
     public stopDisabled: boolean;
 
+    public recipeDisabled: boolean;
+
+    public recipeEntryDisabled: boolean;
+
     public selectedRecipeName: string;
+
+    public selectedRecipeNameEntry: string;
+
+    public recipeNameEntrys: string[];
 
     private rtStatusSubscription: Subscription;
 
@@ -40,6 +48,7 @@ export class RecipesControllerComponent implements OnInit, OnDestroy {
         const status = await this.api.getRecipeRunnerStatus().toPromise();
         this.setLastStatus(status);
         this.recipeChanged.emit(this.selectedRecipeName);
+        this.updateRecipeNameEntrys();
 
         this.rtStatusSubscription = this.realtimeService.getRecipeRunnerStatus$()
             .subscribe(s => {
@@ -55,18 +64,32 @@ export class RecipesControllerComponent implements OnInit, OnDestroy {
 
     public async onRecipeNameSelectionChange(evt: MatSelectChange) {
         this.selectedRecipeName = evt.value;
+        this.selectedRecipeNameEntry = undefined;
         this.recipeChanged.emit(this.selectedRecipeName);
         this.setLastStatus(undefined);
+
+        this.updateRecipeNameEntrys();
+    }
+
+    public async onRecipeNameEntrySelectionChange(evt: MatSelectChange) {
+        this.selectedRecipeNameEntry = evt.value;
     }
 
     public async startRecipe() {
         if (this.selectedRecipeName) {
-            this.api.startRecipe(this.selectedRecipeName);
+            this.api.startRecipe(this.selectedRecipeName, this.selectedRecipeNameEntry);
         }
     }
 
     public async stopRecipe() {
         await this.api.stopRecipe();
+    }
+
+    private async updateRecipeNameEntrys() {
+        const recipe = await this.api.getRecipe(this.selectedRecipeName).toPromise();
+        this.recipeNameEntrys = recipe.entries.map(e => e.name);
+        this.recipeNameEntrys.splice(0, 0, undefined);
+        this.selectedRecipeNameEntry = undefined;
     }
 
     private setLastStatus(status: RecipeRuntimeState) {
@@ -79,5 +102,9 @@ export class RecipesControllerComponent implements OnInit, OnDestroy {
         }
 
         this.startDisabled = (status && !status.isFinished) || !this.selectedRecipeName;
+
+        this.recipeDisabled = (status && !status.isFinished);
+
+        this.recipeEntryDisabled = this.recipeDisabled || !this.selectedRecipeName;
     }
 }

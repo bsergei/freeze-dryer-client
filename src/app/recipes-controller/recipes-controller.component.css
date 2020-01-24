@@ -1,0 +1,17 @@
+mat-form-field {
+    padding-right: 5px;
+}
+
+mat-toolbar > button {
+    min-width: 80px;
+}
+
+mat-toolbar {
+    flex-wrap: wrap;
+}
+
+@media(max-width: 599px) {
+    mat-toolbar {
+        height: 170px;
+    }
+}
