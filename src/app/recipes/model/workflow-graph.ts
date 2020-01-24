@@ -54,8 +54,7 @@ export class WorkflowGraph {
                 this.graph.setCellStyles(mxgraph.mxConstants.STYLE_FILLCOLOR,hlColor, [cell]);
                 this.graph.refresh(cell);
             }
-        }
-        else {
+        } else {
             cell = undefined;
         }
 
@@ -89,6 +88,17 @@ export class WorkflowGraph {
                 if (target1) {
                     this.graph.insertEdge(this.defaultParent, null, '', src, target1);
                 }
+
+                const onError = this.map[(item as WfStart).on_error_id];
+                if (onError) {
+                    this.graph.insertEdge(this.defaultParent, null, '', src, onError);
+                }
+
+                const onAbort = this.map[(item as WfStart).on_abort_id];
+                if (onAbort) {
+                    this.graph.insertEdge(this.defaultParent, null, '', src, onAbort);
+                }
+
                 break;
             case 'action':
                 const target2 = this.map[(item as WfAction).next_id];
@@ -126,6 +136,7 @@ export class WorkflowGraph {
                 this.map[item.id] = end;
                 break;
             case 'action':
+            case 'final_action':
                 const action = this.graph.insertVertex(this.defaultParent, item.id, item.id, 0, 0, defaultWidth, 40, 'shape=rectangle');
                 this.graph.setCellStyles(mxgraph.mxConstants.STYLE_FILLCOLOR, '#C6DBFF', [action]);
                 this.map[item.id] = action;
