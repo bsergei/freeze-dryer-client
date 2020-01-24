@@ -73,7 +73,8 @@ export class RecipeAnimatorComponent implements OnInit, OnDestroy {
                 steps: [],
                 currentStep: undefined,
                 endDate: new Date(),
-                error: undefined
+                error: undefined,
+                custom: {}
             });
         }
 
