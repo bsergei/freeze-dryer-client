@@ -6,30 +6,78 @@ html, body {
 }
 
 .mat-toolbar {
-    font-size: 12px;
+    font-size: 10px !important;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+    height: 42px !important;
+}
+
+.mat-toolbar-multiple-rows {
+    min-height: 42px !important;
 }
 
 .mat-card-content {
-    font-size: 12px;
+    font-size: 10px !important;
+}
+
+.mat-card-title {
+    font-size: 14px !important;
+}
+
+.mat-form-field {
+    line-height: 1 !important;
 }
 
 .mat-card {
-    margin: 10px 5px;
+    margin: 3px 3px !important;
+}
+
+.mat-dialog-title {
+    font-size: 14px !important;
 }
 
 tr.mat-footer-row, tr.mat-row {
-    height: 38px !important;
+    height: 25px !important;
+}
+
+tr.mat-header-row {
+    height: 25px !important;
+}
+
+td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type {
+    padding-left: 5px !important;
+}
+
+.mat-cell, .mat-footer-cell {
+    font-size: 10px !important;
+}
+
+.mat-card-actions, .mat-card-content, .mat-card-subtitle {
+    margin-bottom: 5px !important;
+}
+
+.mat-card {
+    padding-top: 5px !important;
+    padding-right: 15px !important;
+    padding-bottom: 15px !important;
+    padding-left: 5px !important;
+    border-radius: 0 !important;
 }
 
 button.mat-button, button.mat-stroked-button, button.mat-raised-button {
-    font-size: 12px;
-    padding: 0 8px;
-    min-width: 48px;
-    margin: 0px 2px;
+    font-size: 10px !important;
+    padding: 0 5px !important;
+    min-width: 40px !important;
+    margin: 0px 1px !important;
+}
+
+.mat-stroked-button {
+    line-height: 24px !important;
 }
 
 .toolbar-label {
-    font-size: 14px;
+    font-size: 10px;
     margin-right: 10px;
 }
 

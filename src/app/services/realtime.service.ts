@@ -26,7 +26,7 @@ export class RealtimeService {
     public getSensorsStatus$() {
         return this.socket$.pipe(
             flatMap(socket => this.subscribe<SensorsStatus>(socket, 'sensors-status')),
-            bufferTime(200),
+            bufferTime(1000),
             map(r => r.length > 0 ? r[r.length - 1] : undefined),
             filter(r => r !== undefined && r !== null));
     }
@@ -34,7 +34,7 @@ export class RealtimeService {
     public getUnitWorkerStatus$() {
         return this.socket$.pipe(
             flatMap(socket => this.subscribe<UnitWorkerStatus>(socket, 'unit-worker-status')),
-            bufferTime(200),
+            bufferTime(500),
             map(r => r.length > 0 ? r[r.length - 1] : undefined),
             filter(r => r !== undefined && r !== null));
     }

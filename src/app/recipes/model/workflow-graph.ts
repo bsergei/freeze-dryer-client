@@ -176,12 +176,13 @@ export class WorkflowGraph {
     private applyLayout() {
         const layout = new mxgraph.mxHierarchicalLayout(this.graph);
         const l: any = layout;
-        l.intraCellSpacing = 100; // default: 30
+        l.intraCellSpacing = 60; // default: 30
         l.interHierarchySpacing = 60; // default: 60
-        l.interRankCellSpacing = 40; // default: 50
+        l.interRankCellSpacing = 30; // default: 50
         layout.execute(this.defaultParent, this.roots);
 
         this.graph.moveCells(this.defaultParent.children, 50, 15);
+        this.graph.view.setScale(0.8);
     }
 
     private setupTooltips() {
